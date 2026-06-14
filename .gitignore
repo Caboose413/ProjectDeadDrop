@@ -1,0 +1,15 @@
+OfflineAssets/
+.DS_Store
+Thumbs.db
+
+# Private planning and sensitive local notes
+*.md
+!README.md
+notes/
+private/
+secrets/
+
+# Local configuration and credentials
+.env
+.env.*
+*.local

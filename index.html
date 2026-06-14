@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project Dead Drop</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="terminal-shell">
+    <section id="login-screen" class="access-panel" aria-labelledby="screen-title">
+      <header class="panel-header">
+        <div>
+          <p class="eyebrow">Project Dead Drop</p>
+          <h1 id="screen-title">Transition Recovery Node</h1>
+        </div>
+        <span class="status-pill" aria-label="System status">LOCKED</span>
+      </header>
+
+      <div class="case-strip" aria-label="Case summary">
+        <span>CASE 07-AFTERIMAGE</span>
+        <span>IMPRINT STATE: UNRESOLVED</span>
+        <span>CHANNEL: DEAD DROP</span>
+      </div>
+
+      <form id="access-form" class="access-form" novalidate>
+        <div class="field-row">
+          <label for="operator-id">ID</label>
+          <input id="operator-id" name="operator-id" autocomplete="username" required spellcheck="false">
+        </div>
+
+        <div class="field-row">
+          <label for="operator-password">Password</label>
+          <input id="operator-password" name="operator-password" type="password" autocomplete="current-password" required>
+        </div>
+
+        <p id="form-message" class="form-message" role="status" aria-live="polite"></p>
+
+        <button type="submit">
+          <span>Authenticate</span>
+        </button>
+      </form>
+
+      <p class="credential-note">Prototype ID: ECHO-07</p>
+      <div class="byte-clue" aria-label="Recovered password fragment">
+        <span>Recovered password bytes</span>
+        <code>61 66 74 65 72 69 6d 61 67 65</code>
+      </div>
+    </section>
+
+    <section id="console-screen" class="console-panel" aria-labelledby="console-title" hidden>
+      <header class="panel-header">
+        <div>
+          <p class="eyebrow">Dead Drop Node</p>
+          <h1 id="console-title">Case 07-AFTERIMAGE</h1>
+        </div>
+        <div class="console-actions">
+          <button id="clear-cache" class="clear-cache-button" type="button">Clear Cache</button>
+          <span class="status-pill status-open" aria-label="System status">OPEN</span>
+        </div>
+      </header>
+
+      <div class="case-strip" aria-label="Recovered state">
+        <span>AUTH: PROVISIONAL</span>
+        <span>TRACE: PARTIAL</span>
+        <span>IMPRINT: IN TRANSIT</span>
+      </div>
+
+      <section class="console" aria-label="Dead Drop console">
+        <div id="console-output" class="console-output" aria-live="polite">
+          <div class="sys">[ DEAD DROP :: RECOVERY CONSOLE ]</div>
+          <div class="sys">[ SESSION: PROVISIONAL ]</div>
+          <div class="sys">[ TYPE HELP FOR COMMANDS ]</div>
+          <div class="line-break"></div>
+        </div>
+
+        <form id="console-form" class="console-form" autocomplete="off">
+          <label for="console-input">dead-drop&gt;</label>
+          <input id="console-input" spellcheck="false" aria-label="Console command">
+        </form>
+      </section>
+    </section>
+  </main>
+
+  <div id="goal-effect" class="goal-effect" aria-live="assertive" hidden>
+    <div class="goal-card">
+      <span>Location Marker Recovered</span>
+      <strong>L4 Shallow Fields Station</strong>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
