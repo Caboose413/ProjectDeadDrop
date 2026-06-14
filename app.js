@@ -12,12 +12,15 @@ const consoleForm = document.querySelector("#console-form");
 const consoleInput = document.querySelector("#console-input");
 const consoleOutput = document.querySelector("#console-output");
 const clearCacheButton = document.querySelector("#clear-cache");
-const goalEffect = document.querySelector("#goal-effect");
+const rewardEffect = document.querySelector("#reward-effect");
+const rewardKicker = rewardEffect.querySelector("[data-reward-kicker]");
+const rewardTitle = rewardEffect.querySelector("[data-reward-title]");
 let riddleArmed = false;
 let locationMarkerRecovered = false;
+let rewardEffectTimer = null;
 
-goalEffect.hidden = true;
-document.body.classList.remove("goal-reached");
+rewardEffect.hidden = true;
+document.body.classList.remove("reward-effect-active");
 
 const SIGNAL_CODECS = {
   base64: {
@@ -145,7 +148,7 @@ function printLockedLocationMarker() {
   ], "err");
 }
 
-function playGoalSound() {
+function playRewardSound() {
   const AudioContext = window.AudioContext || window.webkitAudioContext;
   if (!AudioContext) return;
 
@@ -174,24 +177,52 @@ function playGoalSound() {
   window.setTimeout(() => context.close(), 900);
 }
 
-function triggerGoalEffect() {
-  playGoalSound();
-  document.body.classList.remove("goal-reached");
-  goalEffect.hidden = false;
-  void document.body.offsetWidth;
-  document.body.classList.add("goal-reached");
+function hideRewardPopup() {
+  if (rewardEffectTimer) {
+    window.clearTimeout(rewardEffectTimer);
+    rewardEffectTimer = null;
+  }
 
-  window.setTimeout(() => {
-    goalEffect.hidden = true;
-    document.body.classList.remove("goal-reached");
-  }, 1500);
+  rewardEffect.hidden = true;
+  document.body.classList.remove("reward-effect-active");
 }
 
-function unlockConsole() {
+function showRewardPopup({ kicker, title, duration = 1500, playSound = true }) {
+  rewardKicker.textContent = kicker;
+  rewardTitle.textContent = title;
+
+  if (playSound) playRewardSound();
+  if (rewardEffectTimer) window.clearTimeout(rewardEffectTimer);
+
+  document.body.classList.remove("reward-effect-active");
+  rewardEffect.hidden = true;
+  void rewardEffect.offsetWidth;
+  rewardEffect.hidden = false;
+  void document.body.offsetWidth;
+  document.body.classList.add("reward-effect-active");
+
+  rewardEffectTimer = window.setTimeout(hideRewardPopup, duration);
+}
+
+function triggerGoalEffect() {
+  showRewardPopup({
+    kicker: "Location Marker Recovered",
+    title: "L4 Shallow Fields Station"
+  });
+}
+
+function unlockConsole({ showAccessReward = false } = {}) {
   localStorage.setItem(ACCESS_CACHE_KEY, "true");
   loginScreen.hidden = true;
   consoleScreen.hidden = false;
   consoleInput.focus();
+
+  if (showAccessReward) {
+    showRewardPopup({
+      kicker: "Access Granted",
+      title: "Dead Drop Node Open"
+    });
+  }
 }
 
 function resetAccess() {
@@ -337,7 +368,7 @@ function runCommand(rawCommand) {
     return;
   }
 
-  if (command === "open depot-02" || command === "open depot-02/" || command === "cd depot-02" || command === "cd depot-02/") {
+  if (command === "open depot02" || command === "open depot02/" || command === "cd depot02" || command === "cd depot02/") {
     appendConsoleGrid(
       "DEPOT02 // RELAY DATA AND MESSAGE PINGS",
       ["Entry", "Type", "From", "Route", "To", "Status"],
@@ -358,7 +389,7 @@ function runCommand(rawCommand) {
     return;
   }
 
-  if (command === "open depot-03" || command === "open depot-03/" || command === "cd depot-03" || command === "cd depot-03/") {
+  if (command === "open depot03" || command === "open depot03/" || command === "cd depot03" || command === "cd depot03/") {
     appendConsoleBlock([
       "DEPOT03 // BANU EXCHANGE FRAGMENTS",
       "------------------------------------------------",
@@ -489,7 +520,7 @@ form.addEventListener("submit", (event) => {
   }
 
   message.textContent = "";
-  unlockConsole();
+  unlockConsole({ showAccessReward: true });
 });
 
 consoleForm.addEventListener("submit", (event) => {

@@ -69,7 +69,7 @@ body::before {
   background: linear-gradient(90deg, rgba(0, 0, 0, 0.35), transparent 18%, transparent 82%, rgba(0, 0, 0, 0.42));
 }
 
-body.goal-reached::after {
+body.reward-effect-active::after {
   content: "";
   position: fixed;
   inset: 0;
@@ -79,7 +79,7 @@ body.goal-reached::after {
     linear-gradient(rgba(225, 181, 87, 0.18) 1px, transparent 1px),
     radial-gradient(circle at 50% 50%, rgba(225, 181, 87, 0.28), transparent 34rem);
   background-size: 100% 6px, auto;
-  animation: goal-scan 900ms ease-out both;
+  animation: reward-scan 900ms ease-out both;
 }
 
 .terminal-shell {
@@ -394,7 +394,7 @@ button:focus-visible {
   box-shadow: none;
 }
 
-.goal-effect {
+.reward-effect {
   position: fixed;
   inset: 0;
   z-index: 30;
@@ -404,21 +404,21 @@ button:focus-visible {
   padding: 24px;
 }
 
-.goal-effect[hidden] {
+.reward-effect[hidden] {
   display: none;
 }
 
-.goal-card {
+.reward-card {
   width: min(560px, 100%);
   border: 1px solid var(--warn);
   background: rgba(17, 13, 4, 0.94);
   box-shadow: 0 0 36px rgba(225, 181, 87, 0.24), inset 0 0 0 1px rgba(225, 181, 87, 0.18);
   padding: 24px;
   text-align: center;
-  animation: goal-card 1400ms ease-out both;
+  animation: reward-card 1400ms ease-out both;
 }
 
-.goal-card span {
+.reward-card span {
   display: block;
   color: var(--muted);
   font-size: 12px;
@@ -427,14 +427,14 @@ button:focus-visible {
   margin-bottom: 10px;
 }
 
-.goal-card strong {
+.reward-card strong {
   display: block;
   color: var(--warn);
   font-size: clamp(24px, 6vw, 42px);
   line-height: 1;
 }
 
-@keyframes goal-scan {
+@keyframes reward-scan {
   0% {
     opacity: 0;
     transform: scale(1.03);
@@ -448,7 +448,7 @@ button:focus-visible {
   }
 }
 
-@keyframes goal-card {
+@keyframes reward-card {
   0% {
     opacity: 0;
     transform: translateY(16px) scale(0.97);
