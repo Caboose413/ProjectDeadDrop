@@ -288,9 +288,9 @@ function runCommand(rawCommand) {
 
   if (command === "ls") {
     appendConsoleBlock([
-      "drwxr-x---  depot-01/   [grey-market goods manifest]",
-      "drwxr-x---  depot-02/   [relay data and message pings]",
-      "drwxr-x---  depot-03/   [banu exchange fragments]"
+      "drwxr-x---  depot01/    [grey-market goods manifest]",
+      "drwxr-x---  depot02/   [relay data and message pings]",
+      "drwxr-x---  depot03/   [banu exchange fragments]"
     ]);
     return;
   }
@@ -312,12 +312,12 @@ function runCommand(rawCommand) {
       "",
       "example:",
       "  ls",
-      "  cd depot-01"
+      "  cd depot01"
     ]);
     return;
   }
 
-  if (command === "open depot-01" || command === "open depot-01/" || command === "cd depot-01" || command === "cd depot-01/") {
+  if (command === "open depot01" || command === "open depot01/" || command === "cd depot01" || command === "cd depot01/") {
     appendConsoleGrid(
       "DEPOT-01 // GREY-MARKET GOODS MANIFEST",
       ["Entry", "Goods", "Qty", "From", "Route", "To", "Status"],
@@ -339,7 +339,7 @@ function runCommand(rawCommand) {
 
   if (command === "open depot-02" || command === "open depot-02/" || command === "cd depot-02" || command === "cd depot-02/") {
     appendConsoleGrid(
-      "DEPOT-02 // RELAY DATA AND MESSAGE PINGS",
+      "DEPOT02 // RELAY DATA AND MESSAGE PINGS",
       ["Entry", "Type", "From", "Route", "To", "Status"],
       [
         ["#1", "ping", "St-Gate", ">", "Pyro-RAB-03", "Timedout 650ms"],
@@ -360,7 +360,7 @@ function runCommand(rawCommand) {
 
   if (command === "open depot-03" || command === "open depot-03/" || command === "cd depot-03" || command === "cd depot-03/") {
     appendConsoleBlock([
-      "DEPOT-03 // BANU EXCHANGE FRAGMENTS",
+      "DEPOT03 // BANU EXCHANGE FRAGMENTS",
       "------------------------------------------------",
       "2926-06-02 20:03:09  TRADE    ID-622  Status=Delivered,InBound",
       "2926-06-02 20:04:27  TRADE    ID-622  Status=Delivered,OutBound",
