@@ -372,13 +372,13 @@ function runCommand(rawCommand) {
       "DEPOT02 // RELAY DATA AND MESSAGE PINGS",
       ["Entry", "Type", "From", "Route", "To", "Status"],
       [
-        ["#1", "ping",      "St-Gate",    "out", "Pyro-RAB-03", "Timedout 650ms"],
-        ["#2", "msg",       "Alu",        "out", "Banu-X9", "Delivered, OutBound"],
-        ["#3", "ping",      "Nyx",        "in", "StL$", "Data package"],
-        ["#4", "package",   "Stl$",       "in", "Data package", { text: "TDQgU2hhbGxvdyBGaWVsZHMgU3RhdGlvbg==", className: "is-payload" }],
-        ["#6", "ack",       "Pyro",       "in", "St-Gate", "Delivered, InBound"],
-        ["#7", "packet",    "StL$",       "out", "carrier", "WeightMismatch"],
-        ["#8", "burst",     "unknown",    "in", "StL$", "Fragmented"]
+        ["#1", "ping",      "St-Gate",    "out",  "Pyro-RAB-03",    "Timedout 650ms"],
+        ["#2", "msg",       "Alu",        "out",  "Banu-X9",        "Delivered, OutBound"],
+        ["#3", "ping",      "Nyx",        "in",   "StL$",           "Data package"],
+        ["#4", "package",   "Pyro",       "in",   "Stl$",           { text: "TDQgU2hhbGxvdyBGaWVsZHMgU3RhdGlvbg==", className: "is-payload" }],
+        ["#6", "ack",       "Pyro",       "in",   "St-Gate",        "Delivered, InBound"],
+        ["#7", "packet",    "StL$",       "out",  "carrier",        "WeightMismatch"],
+        ["#8", "burst",     "unknown",    "in",   "StL$",           "Fragmented"]
       ],
       [
         "validation: ID-413",
