@@ -230,6 +230,22 @@ input[aria-invalid="true"] {
   word-break: break-word;
 }
 
+.data-ledger {
+  margin: 0;
+  overflow-x: auto;
+  color: var(--warn);
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.data-ledger code {
+  color: inherit;
+  font: inherit;
+  white-space: pre;
+  word-break: normal;
+}
+
 button {
   justify-self: end;
   min-height: 44px;
