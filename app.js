@@ -24,17 +24,14 @@ document.body.classList.remove("reward-effect-active");
 
 const SIGNAL_CODECS = {
   base64: {
-    aliases: ["b64"],
     label: "Base64 payload",
     decode: (payload) => atob(payload)
   },
   hex: {
-    aliases: [],
     label: "Hex byte string",
     decode: (payload) => decodeHex(payload.replace(/\s+/g, ""))
   },
   reverse: {
-    aliases: ["rev"],
     label: "Reverse string",
     decode: (payload) => payload.split("").reverse().join("")
   }
@@ -119,14 +116,13 @@ function appendConsoleGrid(title, columns, rows, footerLines = []) {
 
 function getSignalCodec(type) {
   return Object.entries(SIGNAL_CODECS).find(([name, codec]) => {
-    return name === type || codec.aliases.includes(type);
+    return name === type;
   });
 }
 
 function listSignalCodecs() {
   return Object.entries(SIGNAL_CODECS).map(([name, codec]) => {
-    const aliases = codec.aliases.length ? ` (${codec.aliases.join(", ")})` : "";
-    return `  ${name}${aliases} - ${codec.label}`;
+    return `  ${name} - ${codec.label}`;
   });
 }
 
@@ -277,10 +273,7 @@ function runCommand(rawCommand) {
         "  signal <type> <payload>",
         "",
         "types:",
-        ...listSignalCodecs(),
-        "",
-        "example:",
-        "  signal base64 TDQgU2hhbGxvdyBGaWVsZHMgU3RhdGlvbg=="
+        ...listSignalCodecs()
       ]);
       return;
     }
@@ -375,7 +368,7 @@ function runCommand(rawCommand) {
       [
         ["#1", "ping", "St-Gate", ">", "Pyro-RAB-03", "Timedout 650ms"],
         ["#2", "msg", "Alu", ">", "Banu-X9", "Delivered, OutBound"],
-        ["#3", "ping", "Nyx", "<", "StL$", "Data package b64"],
+        ["#3", "ping", "Nyx", "<", "StL$", "Data package base64"],
         ["", "package", "", "", "", { text: "TDQgU2hhbGxvdyBGaWVsZHMgU3RhdGlvbg==", className: "is-payload" }],
         ["#4", "ack", "Pyro", "<", "St-Gate", "Delivered, InBound"],
         ["#5", "packet", "StL$", ">", "carrier", "WeightMismatch"],
@@ -408,7 +401,7 @@ function runCommand(rawCommand) {
 
   if (command === "status") {
     appendConsoleBlock([
-      "CASE:       07-AFTERIMAGE",
+      "CASE:       07-LOSTREGEN",
       "SUBJECT:    [REDACTED]",
       "IMPRINT:    unresolved / transition residue detected",
       "ROUTE:      clinic -> carrier -> grey-market relay -> unknown",
