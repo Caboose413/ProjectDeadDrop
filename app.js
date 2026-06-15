@@ -15,6 +15,9 @@ const clearCacheButton = document.querySelector("#clear-cache");
 const rewardEffect = document.querySelector("#reward-effect");
 const rewardKicker = rewardEffect.querySelector("[data-reward-kicker]");
 const rewardTitle = rewardEffect.querySelector("[data-reward-title]");
+const commandHistory = [];
+let commandHistoryIndex = 0;
+let commandHistoryDraft = "";
 let riddleArmed = false;
 let locationMarkerRecovered = false;
 let rewardEffectTimer = null;
@@ -226,6 +229,9 @@ function resetAccess() {
   resetConsoleOutput();
   riddleArmed = false;
   locationMarkerRecovered = false;
+  commandHistory.length = 0;
+  commandHistoryIndex = 0;
+  commandHistoryDraft = "";
   consoleInput.value = "";
   consoleScreen.hidden = true;
   loginScreen.hidden = false;
@@ -245,13 +251,13 @@ function runCommand(rawCommand) {
 
   if (command === "help") {
     appendConsoleBlock([
-      "help show this list",
-      "ls list recovered depots",
-      "cd <dir> open a depot",
-      "signal <method> <data> decode signal payload",
-      "status show case status",
-      "clear clear terminal (alias cls)",
-      "findme identify current session"
+      "help     - show this list",
+      "ls       - list recovered depots",
+      "cd       - <dir> open a depot",
+      "signal   - <method> <data> decode signal payload",
+      "status   - show case status",
+      "clear    - clear terminal (alias cls)",
+      "findme   - identify current session"
     ]);
     return;
   }
@@ -368,11 +374,11 @@ function runCommand(rawCommand) {
       [
         ["#1", "ping", "St-Gate", ">", "Pyro-RAB-03", "Timedout 650ms"],
         ["#2", "msg", "Alu", ">", "Banu-X9", "Delivered, OutBound"],
-        ["#3", "ping", "Nyx", "<", "StL$", "Data package base64"],
-        ["", "package", "", "", "", { text: "TDQgU2hhbGxvdyBGaWVsZHMgU3RhdGlvbg==", className: "is-payload" }],
-        ["#4", "ack", "Pyro", "<", "St-Gate", "Delivered, InBound"],
-        ["#5", "packet", "StL$", ">", "carrier", "WeightMismatch"],
-        ["#6", "burst", "unknown", "<", "StL$", "Fragmented"]
+        ["#3", "ping", "Nyx", "<", "StL$", "Data package"],
+        ["#4", "package", "Unknown", "Stl$", "Data package", { text: "TDQgU2hhbGxvdyBGaWVsZHMgU3RhdGlvbg==", className: "is-payload" }],
+        ["#6", "ack", "Pyro", "<", "St-Gate", "Delivered, InBound"],
+        ["#7", "packet", "StL$", ">", "carrier", "WeightMismatch"],
+        ["#8", "burst", "unknown", "<", "StL$", "Fragmented"]
       ],
       [
         "validation: ID-413",
@@ -519,8 +525,33 @@ form.addEventListener("submit", (event) => {
 consoleForm.addEventListener("submit", (event) => {
   event.preventDefault();
   const rawCommand = consoleInput.value;
+  const command = rawCommand.trim();
+  if (command) {
+    commandHistory.push(rawCommand);
+    commandHistoryIndex = commandHistory.length;
+    commandHistoryDraft = "";
+  }
   consoleInput.value = "";
   runCommand(rawCommand);
+});
+
+consoleInput.addEventListener("keydown", (event) => {
+  if (event.key !== "ArrowUp" && event.key !== "ArrowDown") return;
+  if (!commandHistory.length) return;
+
+  event.preventDefault();
+
+  if (event.key === "ArrowUp") {
+    if (commandHistoryIndex === commandHistory.length) {
+      commandHistoryDraft = consoleInput.value;
+    }
+    commandHistoryIndex = Math.max(0, commandHistoryIndex - 1);
+  } else {
+    commandHistoryIndex = Math.min(commandHistory.length, commandHistoryIndex + 1);
+  }
+
+  consoleInput.value = commandHistory[commandHistoryIndex] || commandHistoryDraft;
+  consoleInput.setSelectionRange(consoleInput.value.length, consoleInput.value.length);
 });
 
 clearCacheButton.addEventListener("click", resetAccess);
