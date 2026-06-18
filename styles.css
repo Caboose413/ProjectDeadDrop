@@ -66,7 +66,18 @@ body::before {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.35), transparent 18%, transparent 82%, rgba(0, 0, 0, 0.42));
+  z-index: 10;
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.35), transparent 18%, transparent 82%, rgba(0, 0, 0, 0.42)),
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 3px,
+      rgba(0, 0, 0, 0.13) 3px,
+      rgba(0, 0, 0, 0.13) 4px
+    );
+  background-position: 0 0, 0 0;
+  animation: crt-scanlines 700ms linear infinite;
 }
 
 body.reward-effect-active::after {
@@ -461,6 +472,18 @@ button:focus-visible {
   100% {
     opacity: 0;
     transform: scale(1);
+  }
+}
+
+@keyframes crt-scanlines {
+  to {
+    background-position: 0 0, 0 4px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    animation: none;
   }
 }
 
