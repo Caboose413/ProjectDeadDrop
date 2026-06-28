@@ -130,7 +130,7 @@ const DeadDropCommands = (() => {
     }
 
     if (command === "open depot01" || command === "open depot01/" || command === "cd depot01" || command === "cd depot01/") {
-      DeadDropConsole.appendGrid(
+      DeadDropConsole.openDepot(
         "DEPOT-01 // GREY-MARKET GOODS MANIFEST",
         ["Entry", "Goods", "Qty", "From", "Route", "To", "Status"],
         [
@@ -150,7 +150,7 @@ const DeadDropCommands = (() => {
     }
 
     if (command === "open depot02" || command === "open depot02/" || command === "cd depot02" || command === "cd depot02/") {
-      DeadDropConsole.appendGrid(
+      DeadDropConsole.openDepot(
         "DEPOT02 // RELAY DATA AND MESSAGE PINGS",
         ["Entry", "Type", "From", "Route", "To", "Status"],
         [
@@ -171,14 +171,15 @@ const DeadDropCommands = (() => {
     }
 
     if (command === "open depot03" || command === "open depot03/" || command === "cd depot03" || command === "cd depot03/") {
-      DeadDropConsole.appendBlock([
+      DeadDropConsole.openDepot(
         "DEPOT03 // BANU EXCHANGE FRAGMENTS",
-        "------------------------------------------------",
-        "2926-06-02 20:03:09  TRADE    ID-622  Status=Delivered,InBound",
-        "2926-06-02 20:04:27  TRADE    ID-622  Status=Delivered,OutBound",
-        "",
-        "translation confidence too low for recovery"
-      ]);
+        ["Timestamp", "Type", "ID", "Status"],
+        [
+          ["2926-06-02 20:03:09", "TRADE", "ID-622", "Delivered, InBound"],
+          ["2926-06-02 20:04:27", "TRADE", "ID-622", "Delivered, OutBound"]
+        ],
+        ["translation confidence too low for recovery"]
+      );
       return;
     }
 

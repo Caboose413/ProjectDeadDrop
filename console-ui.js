@@ -21,7 +21,7 @@ const DeadDropConsole = (() => {
     ]);
   }
 
-  function appendGrid(title, columns, rows, footerLines = []) {
+  function createGridBlock(title, columns, rows, footerLines = []) {
     const wrapper = document.createElement("section");
     wrapper.className = "console-grid-block";
 
@@ -64,14 +64,35 @@ const DeadDropConsole = (() => {
       wrapper.appendChild(footer);
     });
 
-    DeadDropDom.consoleOutput.appendChild(wrapper);
+    return wrapper;
+  }
+
+  function appendGrid(title, columns, rows, footerLines = []) {
+    DeadDropDom.consoleOutput.appendChild(createGridBlock(title, columns, rows, footerLines));
     DeadDropDom.consoleOutput.scrollTop = DeadDropDom.consoleOutput.scrollHeight;
+  }
+
+  function openDepot(title, columns, rows, footerLines = []) {
+    DeadDropDom.depotTitle.textContent = title;
+    DeadDropDom.depotContent.innerHTML = "";
+    DeadDropDom.depotContent.appendChild(createGridBlock(title, columns, rows, footerLines));
+    DeadDropDom.consoleScreen.hidden = true;
+    DeadDropDom.depotScreen.hidden = false;
+    DeadDropDom.backToConsoleButton.focus();
+  }
+
+  function closeDepot() {
+    DeadDropDom.depotScreen.hidden = true;
+    DeadDropDom.consoleScreen.hidden = false;
+    DeadDropDom.consoleInput.focus();
   }
 
   return {
     appendLine,
     appendBlock,
     resetOutput,
-    appendGrid
+    appendGrid,
+    openDepot,
+    closeDepot
   };
 })();

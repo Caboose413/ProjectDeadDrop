@@ -44,12 +44,7 @@
       <p class="credential-note">Prototype ID: ECHO-07</p>
       <div class="byte-clue" aria-label="Recovered letter-count clue">
         <span>Recovered letter count</span>
-        <pre class="data-ledger"><code>01 06 20 05 18 09 13 01 07 05
-
-01=A  02=B  03=C  04=D  05=E  06=F  07=G
-08=H  09=I  10=J  11=K  12=L  13=M  14=N
-15=O  16=P  17=Q  18=R  19=S  20=T  21=U
-22=V  23=W  24=X  25=Y  26=Z</code></pre>
+        <pre class="data-ledger"><code>01 06 20 05 18 09 13 01 07 05</code></pre>
       </div>
     </section>
 
@@ -84,6 +79,18 @@
           <input id="console-input" spellcheck="false" aria-label="Console command">
         </form>
       </section>
+    </section>
+
+    <section id="depot-screen" class="depot-panel" aria-labelledby="depot-title" hidden>
+      <header class="panel-header">
+        <div>
+          <p class="eyebrow">Recovered Depot</p>
+          <h1 id="depot-title">Depot Manifest</h1>
+        </div>
+        <button id="back-to-console" class="back-button" type="button">&lt; Console</button>
+      </header>
+
+      <div id="depot-content" class="depot-content" aria-live="polite"></div>
     </section>
   </main>
 
