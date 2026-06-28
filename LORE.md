@@ -4,7 +4,17 @@
 
 Project Dead Drop takes place inside the Star Citizen universe. It is a fan-made ARG story built around regeneration technology, hidden trade routes, Banu grey-market dealing, Vanduul hostility, and the darker places where human desperation becomes something that can be bought.
 
-The ARG begins as a personal search. Someone the player loved did not come back after regeneration. Their body was gone, the process should have completed, and the records claim enough to look official at a glance. But the final imprint never arrived where it was supposed to.
+The ARG begins with a message.
+
+The player receives a link to the login website and two words:
+
+```text
+find me
+```
+
+At first, the sender is unknown. It could be a surviving fragment of the missing person, a delayed recovery signal, a trap, or someone inside the network trying to expose what happened. The uncertainty is part of the hook. The message pulls the player toward a system they were never meant to access.
+
+Behind that message is a personal search. Someone the player loved did not come back after regeneration. Their body was gone, the process should have completed, and the records claim enough to look official at a glance. But the final imprint never arrived where it was supposed to.
 
 The case file calls it 07-LOSTREGEN.
 
@@ -22,11 +32,13 @@ Behind the dealers is a second interest: the Vanduul. They want access to human 
 
 The player is not chasing an abstract stolen file. They are chasing the last remaining trace of someone who mattered.
 
-Every command, manifest, relay ping, and decoded payload is part of the same question:
+Every command, manifest, relay ping, and decoded payload is haunted by the first message:
 
 ```text
-Where did they take them?
+find me
 ```
+
+That message becomes the emotional thread through the investigation. The player does not know who sent it at the beginning, but the sender's identity should become clearer as the ARG progresses.
 
 The horror of the ARG comes from realizing that the missing person may not simply be dead. Their imprint may have been copied, altered, tested, sold, or used as experimental material.
 
