@@ -74,6 +74,48 @@ This discovery confirms that the missing regen imprint was not lost by accident.
 
 The L4 code should become the bridge into the next phase of the ARG. It can unlock another page, expose a deeper terminal command, identify a Banu broker, or point to the first evidence of Vanduul-linked experimentation.
 
+## Planned Chapter Structure
+
+### Chapter 1: Stanton
+
+Chapter 1 should stay mostly inside Stanton. This keeps the opening accessible and grounded in familiar trade, station, clinic, and criminal infrastructure before the larger horror is revealed.
+
+The current Chapter 1 path is:
+
+```text
+login website -> recovery console -> CRU-L4 Shallow Fields Station -> L4 code -> website unlock
+```
+
+The planned next stop is:
+
+```text
+CRU-L5 Beautiful Glen Station
+```
+
+CRU-L5 works as the next step because it feels like part of the same relay network as L4. The player should only be sent there after entering the L4 code on the website. The exact L5 clue, number, or riddle should be chosen after scouting the location in game.
+
+Possible Chapter 1 locations after L5:
+
+- Grim HEX, for outlaw contact and broker identity clues.
+- Brio's Breaker Yard, for contraband logistics and cargo disposal clues.
+- Security Post Kareah, for human security records, seized evidence, or a coverup.
+
+Chapter 1 should make the player think they are uncovering a stolen-imprint smuggling network.
+
+### Chapter 2: Pyro
+
+Chapter 2 can move into Pyro once the player understands that the case is bigger than a single missing regen. Pyro should feel less controlled, more dangerous, and more openly criminal.
+
+This chapter can focus on the Banu grey-market network, human collaborators, and the first evidence that stolen imprints are being sold into something worse than ordinary black-market trade.
+
+### Chapter 3: Nyx
+
+Chapter 3 can move toward Nyx and the deeper Vanduul threat. By this point, the player should have enough evidence to understand that the stolen regen data is connected to experiments on minds, memory, and continuity.
+
+Nyx should feel closer to the edge of human space and closer to the Vanduul danger. This is where the ARG can begin turning from smuggling investigation into existential horror.
+
+Onyx should be saved for a major reveal later in the story, not used as the next immediate destination. Before Onyx, clues should say that someone is moving stolen imprints. At Onyx, clues should reveal that someone is using stolen imprints to understand, copy, alter, or weaponize minds.
+
 ## The Network
 
 The dead drop network hides stolen regen data inside ordinary cargo traffic. Legal and semi-legal goods move along known routes while the real payload travels in the data channel. A clean manifest can hide a dirty transfer.
