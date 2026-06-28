@@ -25,6 +25,25 @@ const DeadDropCommands = (() => {
     ], "err");
   }
 
+  function openSolarSystemIndex() {
+    DeadDropConsole.openDepot(
+      "SYSTEM // STANTON NAVIGATION INDEX",
+      ["Band", "Primary", "Known Bodies", "Signal Note"],
+      [
+        ["01", "Hurston", "Arial / Aberdeen / Magda / Ita", "industrial route noise"],
+        ["02", "Crusader", "Cellin / Daymar / Yela / Port Olisar", "Pyro lane bleed"],
+        ["03", "Delamar", "independent planetoid / recovered route object", "legacy nav object"],
+        ["04", "ARC relay band", "ARC-L1 / ARC-L3 / ARC-L4 / ARC-L5", "four positions locked"],
+        ["05", "ArcCorp", "Lyria / Wala", "trade traffic dense"],
+        ["06", "microTech", "Calliope / Clio / Euterpe", "outer-band reflection"]
+      ],
+      [
+        "marker interest: ARC-L4 / Pale Echo",
+        "visual array: use starmap"
+      ]
+    );
+  }
+
   function run(rawCommand) {
     const command = rawCommand.trim().toLowerCase();
     if (!command) return;
@@ -109,7 +128,8 @@ const DeadDropCommands = (() => {
       DeadDropConsole.appendBlock([
         "drwxr-x---  depot01/    [grey-market goods manifest]",
         "drwxr-x---  depot02/   [relay data and message pings]",
-        "drwxr-x---  depot03/   [banu exchange fragments]"
+        "drwxr-x---  depot03/   [banu exchange fragments]",
+        "drwxr-x---  system/    [recovered Stanton navigation index]"
       ]);
       return;
     }
@@ -128,11 +148,18 @@ const DeadDropCommands = (() => {
       DeadDropConsole.appendBlock([
         "ls shows recovered depot manifests available to this session.",
         "Use cd <depot> to inspect a depot manifest.",
+        "Use cd system to inspect the recovered Stanton solar system index.",
         "",
         "example:",
         "  ls",
-        "  cd depot01"
+        "  cd depot01",
+        "  cd system"
       ]);
+      return;
+    }
+
+    if (command === "open system" || command === "open system/" || command === "cd system" || command === "cd system/") {
+      openSolarSystemIndex();
       return;
     }
 
