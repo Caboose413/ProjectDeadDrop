@@ -11,6 +11,36 @@ const DeadDropConsole = (() => {
     lines.forEach((line) => appendLine(line, className));
   }
 
+  function appendDepotList(depots, onOpen) {
+    const list = document.createElement("div");
+    list.className = "depot-list";
+
+    depots.forEach((depot) => {
+      const button = document.createElement("button");
+      button.className = "depot-list-item";
+      button.type = "button";
+      button.addEventListener("click", () => onOpen(depot.id));
+
+      const permissions = document.createElement("span");
+      permissions.className = "depot-list-permissions";
+      permissions.textContent = depot.permissions;
+
+      const name = document.createElement("span");
+      name.className = "depot-list-name";
+      name.textContent = `${depot.id}/`;
+
+      const description = document.createElement("span");
+      description.className = "depot-list-description";
+      description.textContent = `[${depot.description}]`;
+
+      button.append(permissions, name, description);
+      list.appendChild(button);
+    });
+
+    DeadDropDom.consoleOutput.appendChild(list);
+    DeadDropDom.consoleOutput.scrollTop = DeadDropDom.consoleOutput.scrollHeight;
+  }
+
   function resetOutput() {
     DeadDropDom.consoleOutput.innerHTML = "";
     appendBlock([
@@ -81,6 +111,89 @@ const DeadDropConsole = (() => {
     DeadDropDom.backToConsoleButton.focus();
   }
 
+  function openLogDepot(title, entries) {
+    DeadDropDom.depotTitle.textContent = title;
+    DeadDropDom.depotContent.innerHTML = "";
+
+    const wrapper = document.createElement("section");
+    wrapper.className = "log-depot";
+
+    const toolbar = document.createElement("div");
+    toolbar.className = "log-toolbar";
+
+    const searchLabel = document.createElement("label");
+    searchLabel.className = "log-search";
+    searchLabel.htmlFor = "log-search-input";
+    searchLabel.textContent = "Search";
+
+    const searchInput = document.createElement("input");
+    searchInput.id = "log-search-input";
+    searchInput.type = "search";
+    searchInput.placeholder = "Search log";
+    searchInput.autocomplete = "off";
+    searchInput.spellcheck = false;
+
+    const filterLabel = document.createElement("label");
+    filterLabel.className = "log-filter";
+    filterLabel.htmlFor = "log-level-filter";
+    filterLabel.textContent = "Level";
+
+    const levelFilter = document.createElement("select");
+    levelFilter.id = "log-level-filter";
+    ["all", "debug", "info", "warn", "error"].forEach((level) => {
+      const option = document.createElement("option");
+      option.value = level;
+      option.textContent = level.toUpperCase();
+      levelFilter.appendChild(option);
+    });
+
+    const count = document.createElement("span");
+    count.className = "log-count";
+
+    const output = document.createElement("div");
+    output.className = "log-output";
+    output.setAttribute("role", "log");
+    output.setAttribute("aria-live", "polite");
+
+    function render() {
+      const query = searchInput.value.trim().toLowerCase();
+      const level = levelFilter.value;
+      const matches = entries.filter((entry) => {
+        const line = `${entry.timestamp} ${entry.level} ${entry.source} ${entry.message}`.toLowerCase();
+        return (level === "all" || entry.level === level) && (!query || line.includes(query));
+      });
+
+      output.innerHTML = "";
+      count.textContent = `${matches.length}/${entries.length}`;
+
+      matches.forEach((entry) => {
+        const line = document.createElement("div");
+        line.className = `log-line log-line-${entry.level}`;
+        line.textContent = `${entry.timestamp} [${entry.level.toUpperCase()}] ${entry.source}: ${entry.message}`;
+        output.appendChild(line);
+      });
+
+      if (!matches.length) {
+        const empty = document.createElement("div");
+        empty.className = "log-line log-line-empty";
+        empty.textContent = "No matching log entries.";
+        output.appendChild(empty);
+      }
+    }
+
+    searchInput.addEventListener("input", render);
+    levelFilter.addEventListener("change", render);
+
+    toolbar.append(searchLabel, searchInput, filterLabel, levelFilter, count);
+    wrapper.append(toolbar, output);
+    DeadDropDom.depotContent.appendChild(wrapper);
+
+    DeadDropDom.consoleScreen.hidden = true;
+    DeadDropDom.depotScreen.hidden = false;
+    searchInput.focus();
+    render();
+  }
+
   function closeDepot() {
     DeadDropDom.depotScreen.hidden = true;
     DeadDropDom.consoleScreen.hidden = false;
@@ -90,9 +203,11 @@ const DeadDropConsole = (() => {
   return {
     appendLine,
     appendBlock,
+    appendDepotList,
     resetOutput,
     appendGrid,
     openDepot,
+    openLogDepot,
     closeDepot
   };
 })();

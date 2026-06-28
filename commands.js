@@ -2,6 +2,34 @@ const DeadDropCommands = (() => {
   let riddleArmed = false;
   let locationMarkerRecovered = false;
 
+  const logDepotEntries = [
+    { level: "info", timestamp: "2926-06-01 00:04:01.891", source: "comms", message: "payload routed to dead-drop buffer 0x0D awaiting retrieval" },
+    { level: "info", timestamp: "2926-06-01 00:13:01.889", source: "net", message: "bandwidth rx 14.1 Mbps / tx 11.3 Mbps, burst from dead-drop retrieval" },
+    { level: "info", timestamp: "2926-06-01 00:13:44.667", source: "comms", message: "dead-drop 0x0D retrieved by authorized agent, buffer cleared" },
+    { level: "debug", timestamp: "2926-06-01 01:08:12.447", source: "route", message: "shallow-field handshake accepted by local relay cache" },
+    { level: "info", timestamp: "2926-06-01 01:10:55.019", source: "cargo_ref", message: "manifest 413-B linked to commodity bay marker: WiDoW / SLAM / Maze" },
+    { level: "debug", timestamp: "2926-06-01 03:14:08.201", source: "tunnel_mgr", message: "tun2 established via BANU_TRADE_LANE" },
+    { level: "debug", timestamp: "2926-06-01 03:14:08.204", source: "cipher", message: "CHACHA20-POLY1305 / PFS yes / rekey in 44s" },
+    { level: "warn", timestamp: "2926-06-01 03:14:08.205", source: "status", message: "established with unverified peer" },
+    { level: "debug", timestamp: "2926-06-01 03:18:22.640", source: "rnr_sync", message: "paired rest-stop identifiers: shallow field -> adjacent glen" },
+    { level: "info", timestamp: "2926-06-01 05:42:10.332", source: "broker", message: "counterparty handle SAH'TUL requested glen-side dead-drop confirmation" },
+    { level: "warn", timestamp: "2926-06-01 06:11:09.513", source: "crusec_mirror", message: "Kareah evidence index queried without civilian authorization" },
+    { level: "info", timestamp: "2926-06-01 09:25:44.918", source: "salvage_ref", message: "Brio's Breaker Yard listed as disposal fallback for carrier shell" },
+    { level: "warn", timestamp: "2926-06-01 17:42:33.003", source: "audio_cap", message: "speaker identification unknown; no voiceprint match in UEE registry" },
+    { level: "warn", timestamp: "2926-06-01 17:42:33.005", source: "audio_cap", message: "transmission appears to loop; repeating pattern detected" },
+    { level: "error", timestamp: "2926-06-01 17:42:33.111", source: "ami_analysis", message: "targeted psychological message detected" },
+    { level: "debug", timestamp: "2926-06-01 17:42:34.012", source: "route", message: "blackhole entry VANDUUL_NET suppressed by policy filter" },
+    { level: "warn", timestamp: "2926-06-02 02:40:17.229", source: "hex_watch", message: "Grim HEX contact observed replaying broker phrase: no souls, only stock" },
+    { level: "error", timestamp: "2926-06-02 04:03:51.776", source: "ami_analysis", message: "memory-pattern checksum repeated after buffer clear" }
+  ];
+
+  const logLevelClasses = {
+    debug: "sys",
+    info: "echo",
+    warn: "warn",
+    error: "err"
+  };
+
   function resetState() {
     riddleArmed = false;
     locationMarkerRecovered = false;
@@ -71,6 +99,24 @@ const DeadDropCommands = (() => {
     DeadDropOperatorPanel.receive("ECHO-07 opened the Operator channel. Give one short first-contact clue.");
   }
 
+  function printLogDepot(level = "all") {
+    const validLevels = ["all", "debug", "info", "warn", "error"];
+    if (!validLevels.includes(level)) {
+      DeadDropConsole.appendLine(`unsupported log verbosity: ${level}`, "err");
+      DeadDropConsole.appendLine("usage: logs <all|debug|info|warn|error>", "sys");
+      return;
+    }
+
+    DeadDropConsole.appendLine(`LOG DEPOT // verbosity=${level}`, "warn");
+
+    logDepotEntries
+      .filter((entry) => level === "all" || entry.level === level)
+      .forEach((entry) => {
+        const line = `${entry.timestamp} [${entry.level.toUpperCase()}] ${entry.source}: ${entry.message}`;
+        DeadDropConsole.appendLine(line, logLevelClasses[entry.level]);
+      });
+  }
+
   function run(rawCommand) {
     const command = rawCommand.trim().toLowerCase();
     if (!command) return;
@@ -82,6 +128,7 @@ const DeadDropCommands = (() => {
         "help     - show this list",
         "ls       - list recovered depots",
         "cd       - <dir> open a depot",
+        "logs     - <level> print log depot entries",
         "signal   - <method> <data> decode signal payload",
         "operator - <message> contact unresolved channel",
         "starmap  - open recovered navigation array",
@@ -165,13 +212,35 @@ const DeadDropCommands = (() => {
     }
 
     if (command === "ls") {
-      DeadDropConsole.appendBlock([
-        "drwxr-x---  depot01/    [grey-market goods manifest]",
-        "drwxr-x---  depot02/   [relay data and message pings]",
-        "drwxr-x---  depot03/   [banu exchange fragments]",
-        "drwxr-x---  system/    [recovered Stanton navigation index]",
-        "crw-r-----  operator/  [unresolved message channel]"
-      ]);
+      DeadDropConsole.appendDepotList([
+        { id: "depot01", permissions: "drwxr-x---", description: "grey-market goods manifest" },
+        { id: "depot02", permissions: "drwxr-x---", description: "relay data and message pings" },
+        { id: "depot03", permissions: "drwxr-x---", description: "banu exchange fragments" },
+        { id: "depot04", permissions: "-rw-r-----", description: "relay log depot" },
+        { id: "depot05", permissions: "-rw-r-----", description: "audio intercept transcript" },
+        { id: "system", permissions: "drwxr-x---", description: "recovered Stanton navigation index" },
+        { id: "operator", permissions: "crw-r-----", description: "unresolved message channel" }
+      ], (depotId) => run(`cd ${depotId}`));
+      return;
+    }
+
+    if (command === "logs" || command.startsWith("logs ")) {
+      const level = command.split(/\s+/)[1] || "all";
+      if (level === "help" || level === "--help") {
+        DeadDropConsole.appendBlock([
+          "logs prints relay log entries by verbosity.",
+          "",
+          "usage:",
+          "  logs",
+          "  logs all",
+          "  logs debug",
+          "  logs info",
+          "  logs warn",
+          "  logs error"
+        ]);
+        return;
+      }
+      printLogDepot(level);
       return;
     }
 
@@ -188,7 +257,7 @@ const DeadDropCommands = (() => {
     if (command === "ls help") {
       DeadDropConsole.appendBlock([
         "ls shows recovered depot manifests available to this session.",
-        "Use cd <depot> to inspect a depot manifest.",
+        "Click a depot entry or use cd <depot> to inspect a depot manifest.",
         "Use cd system to inspect the recovered Stanton solar system index.",
         "Use cd operator to open the unresolved message channel.",
         "",
@@ -216,16 +285,21 @@ const DeadDropCommands = (() => {
         "DEPOT-01 // GREY-MARKET GOODS MANIFEST",
         ["Entry", "Goods", "Qty", "From", "Route", "To", "Status"],
         [
-          ["#1", "Alu", "40 scu", "Nyx", "> StL$", "Pyro", "Delivered, OutBound"],
-          ["#2", "Steel", "12 scu", "St-Gate", "> StL$", "Alu", "Delivered, InBound"],
-          ["#3", "Iron", "25 scu", "Alu", "> Banu-X9", "Pyro", "Delivered, OutBound"],
-          ["#4", "Plastic", "9 scu", "Pyro", "> StL$", "Nyx", "Delayed, InBound"],
-          ["#5", "Water", "18 scu", "St-Gate", "> Alu", "StL$", "Delivered, InBound"],
-          ["#6", "Med-gel", "2 scu", "Clinic", "> StL$", "Pyro", "Hold, Audit"]
+          ["#1", "Aluminum", "40 scu", "ARC-L1 Wide Forest", "> shallow node", "Grim HEX", "Delivered, OutBound"],
+          ["#2", "Titanium", "12 scu", "Port Tressler", "> Everus Harbor", "Baijini Point", "Delivered, InBound"],
+          ["#3", "Medical supplies", "25 scu", "Orison General", "> shallow node", "Brio's Breaker Yard", "Delivered, OutBound"],
+          ["#4", "WiDoW", "4 scu", "Jumptown", "> Grim HEX", "adjacent R&R", "Delayed, No Questions"],
+          ["#5", "SLAM", "6 scu", "Raven's Roost", "> shallow node", "Grim HEX", "Delivered, Masked"],
+          ["#6", "Maze", "2 scu", "Paradise Cove", "> Brio's", "Security Post Kareah", "Hold, Seized"],
+          ["#7", "Med-gel", "2 scu", "Clinic", "> shallow node", "Pyro jump staging", "Hold, Audit"],
+          ["#8", "Human tissue samples", "1 scu", "New Babbage Interstellar", "> adjacent R&R", "[redacted]", "Manifest mismatch"],
+          ["#9", "Scrap electronics", "18 scu", "HUR-L1 Green Glade", "> adjacent R&R", "Brio's Breaker Yard", "Delivered, Shell Only"],
+          ["#10", "Unlisted data core", "0 scu", "Unknown clinic", "> Banu-X9", "glen-side drop", "WeightMismatch"]
         ],
         [
           "validation: ID-413",
-          "carrier note: goods ledger is clean; data channel reviewed separately"
+          "carrier note: goods ledger is clean; data channel reviewed separately",
+          "audit note: entries #8 and #10 report mass without matching commodity declaration"
         ]
       );
       return;
@@ -240,13 +314,19 @@ const DeadDropCommands = (() => {
           ["#2", "msg",       "Alu",        "out",  "Banu-X9",        "Delivered, OutBound"],
           ["#3", "ping",      "Nyx",        "in",   "StL$",           "Data package"],
           ["#4", "package",   "Pyro",       "in",   "Stl$",           { text: "TDQgU2hhbGxvdyBGaWVsZHMgU3RhdGlvbg==", className: "is-payload" }],
-          ["#6", "ack",       "Pyro",       "in",   "St-Gate",        "Delivered, InBound"],
-          ["#7", "packet",    "StL$",       "out",  "carrier",        "WeightMismatch"],
-          ["#8", "burst",     "unknown",    "in",   "StL$",           "Fragmented"]
+          ["#5", "ack",       "Pyro",       "in",   "St-Gate",        "Delivered, InBound"],
+          ["#6", "packet",    "StL$",       "out",  "carrier",        "WeightMismatch"],
+          ["#7", "burst",     "unknown",    "in",   "StL$",           "Fragmented"],
+          ["#8", "route",     "shallow",    "tun2", "glen",           "Paired relay"],
+          ["#9", "msg",       "Grim HEX",   "tun2", "B.G.",           "Broker phrase"],
+          ["#10", "mirror",   "Kareah",     "in",   "operator",       "Evidence index denied"],
+          ["#11", "ping",     "Brio's",     "out",  "carrier shell",  "Salvage fallback"],
+          ["#12", "packet",   "unknown",    "null", "VANDUUL_NET",    "Blackholed"]
         ],
         [
           "validation: ID-413",
-          "carrier note: message weight exceeds goods declaration"
+          "carrier note: message weight exceeds goods declaration",
+          "operator note: paired relay entries usually indicate a second in-game stop"
         ]
       );
       return;
@@ -255,12 +335,52 @@ const DeadDropCommands = (() => {
     if (command === "open depot03" || command === "open depot03/" || command === "cd depot03" || command === "cd depot03/") {
       DeadDropConsole.openDepot(
         "DEPOT03 // BANU EXCHANGE FRAGMENTS",
-        ["Timestamp", "Type", "ID", "Status"],
+        ["Timestamp", "Type", "ID", "Route", "Status"],
         [
-          ["2926-06-02 20:03:09", "TRADE", "ID-622", "Delivered, InBound"],
-          ["2926-06-02 20:04:27", "TRADE", "ID-622", "Delivered, OutBound"]
+          ["2926-06-02 20:03:09", "TRADE", "ID-622", "Banu-X9 -> shallow field", "Delivered, InBound"],
+          ["2926-06-02 20:04:27", "TRADE", "ID-622", "shallow field -> +1 rest-stop", "Delivered, OutBound"],
+          ["2926-06-02 20:06:02", "OFFER", "SAH'TUL", "B.G. / no questions", "Credit accepted"],
+          ["2926-06-02 20:08:44", "CLAIM", "ID-413", "No Questions", "Human asset disputed"],
+          ["2926-06-02 20:11:30", "VOID", "RED-GLASS", "Grim HEX", "Route cold"],
+          ["2926-06-02 20:14:01", "ESCROW", "ASH-BOX", "Brio's", "Payment dispute"],
+          ["2926-06-02 20:18:19", "NOTICE", "KAREAH-SEIZURE", "Crusader", "Evidence mirror requested"],
+          ["2926-06-02 20:21:55", "TRANSFER", "UNLISTED", "Pyro staging", "Deferred"]
         ],
-        ["translation confidence too low for recovery"]
+        [
+          "translation confidence partial",
+          "cold routes may contain lore but should not block progress"
+        ]
+      );
+      return;
+    }
+
+    if (command === "open depot04" || command === "open depot04/" || command === "cd depot04" || command === "cd depot04/") {
+      DeadDropConsole.openLogDepot("DEPOT04 // RELAY LOG DEPOT", logDepotEntries);
+      return;
+    }
+
+    if (command === "open depot05" || command === "open depot05/" || command === "cd depot05" || command === "cd depot05/") {
+      DeadDropConsole.openDepot(
+        "DEPOT05 // AUDIO INTERCEPT TRANSCRIPT",
+        ["Time", "Speaker", "Confidence", "Transcript"],
+        [
+          ["17:42:33.001", "UNKNOWN", "31%", "Can you hear me?"],
+          ["17:42:33.894", "AMI", "system", "loop detected; transmission repeats every 19.4 seconds"],
+          ["17:42:35.210", "UNKNOWN", "29%", "I do not know if this is still my voice."],
+          ["17:42:36.602", "OPERATOR", "local", "Identify yourself."],
+          ["17:42:38.008", "UNKNOWN", "34%", "They moved me through the trade lane."],
+          ["17:42:41.550", "UNKNOWN", "22%", "Shallow fields was only the first door."],
+          ["17:42:44.991", "AMI", "system", "semantic match: shallow field"],
+          ["17:42:47.301", "UNKNOWN", "27%", "Find the glen. Do not trust the broker."],
+          ["17:42:50.018", "AMI", "system", "semantic match: B.G. / adjacent rest-stop"],
+          ["17:42:53.770", "UNKNOWN", "18%", "No souls, only stock."],
+          ["17:42:57.403", "AMI", "system", "psychological targeting confirmed"],
+          ["17:43:01.000", "UNKNOWN", "12%", "find me"]
+        ],
+        [
+          "transcript source: tun2 / BANU_TRADE_LANE",
+          "operator note: low confidence lines require cross-checking against depot02 and depot04"
+        ]
       );
       return;
     }

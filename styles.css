@@ -444,7 +444,8 @@ button:focus-visible {
 .depot-content {
   margin-top: 20px;
   max-height: 68vh;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   border: 1px solid var(--line);
   background: rgba(0, 0, 0, 0.28);
   padding: 14px;
@@ -491,12 +492,57 @@ button:focus-visible {
   color: var(--danger);
 }
 
+.depot-list {
+  display: grid;
+  gap: 6px;
+  margin: 8px 0 14px;
+}
+
+.depot-list-item {
+  width: 100%;
+  min-height: 38px;
+  display: grid;
+  grid-template-columns: 120px 96px 1fr;
+  gap: 12px;
+  align-items: center;
+  justify-self: stretch;
+  border-color: rgba(38, 68, 61, 0.9);
+  background: rgba(0, 0, 0, 0.16);
+  color: var(--muted);
+  padding: 0 10px;
+  text-align: left;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.depot-list-item:hover,
+.depot-list-item:focus-visible {
+  border-color: var(--line-bright);
+  background: rgba(96, 212, 158, 0.12);
+  color: var(--text);
+}
+
+.depot-list-permissions {
+  color: var(--muted);
+}
+
+.depot-list-name {
+  color: var(--line-bright);
+}
+
+.depot-list-description {
+  color: var(--warn);
+  overflow-wrap: anywhere;
+}
+
 .console-grid-block {
-  min-width: 820px;
+  width: 100%;
+  min-width: 0;
   margin: 8px 0 14px;
   border: 1px solid var(--line);
   background: rgba(0, 0, 0, 0.18);
   color: var(--warn);
+  font-size: 12px;
 }
 
 .console-grid-title {
@@ -508,17 +554,20 @@ button:focus-visible {
 
 .console-grid {
   display: grid;
-  grid-template-columns: repeat(var(--cols), minmax(max-content, 1fr));
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
 }
 
 .console-grid-cell {
+  min-width: 0;
   min-height: 34px;
   display: flex;
   align-items: center;
   border-right: 1px solid rgba(38, 68, 61, 0.85);
   border-bottom: 1px solid rgba(38, 68, 61, 0.85);
   padding: 7px 10px;
-  white-space: nowrap;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .console-grid-cell.is-payload {
@@ -528,7 +577,9 @@ button:focus-visible {
 }
 
 .console-grid-7 .console-grid-cell:nth-child(7n),
-.console-grid-6 .console-grid-cell:nth-child(6n) {
+.console-grid-6 .console-grid-cell:nth-child(6n),
+.console-grid-5 .console-grid-cell:nth-child(5n),
+.console-grid-4 .console-grid-cell:nth-child(4n) {
   border-right: 0;
 }
 
@@ -536,7 +587,7 @@ button:focus-visible {
   color: var(--line-bright);
   background: rgba(96, 212, 158, 0.08);
   text-transform: uppercase;
-  font-size: 12px;
+  font-size: 11px;
   letter-spacing: 0.06em;
 }
 
@@ -544,6 +595,95 @@ button:focus-visible {
   padding: 8px 12px;
   border-top: 1px solid rgba(38, 68, 61, 0.85);
   color: var(--muted);
+}
+
+.log-depot {
+  display: grid;
+  grid-template-rows: auto minmax(360px, 62vh);
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--line);
+  background: #050707;
+}
+
+.log-toolbar {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto minmax(112px, 150px) auto;
+  gap: 10px;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 10px;
+}
+
+.log-search,
+.log-filter {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.log-toolbar input,
+.log-toolbar select {
+  min-height: 36px;
+  border: 1px solid rgba(121, 164, 151, 0.45);
+  background: #020303;
+  color: var(--text);
+  font: inherit;
+}
+
+.log-toolbar input {
+  padding: 0 12px;
+}
+
+.log-toolbar select {
+  padding: 0 10px;
+}
+
+.log-count {
+  color: var(--muted);
+  font-size: 12px;
+  text-align: right;
+}
+
+.log-output {
+  overflow: auto;
+  padding: 10px 12px;
+  font-size: 13px;
+  line-height: 1.55;
+  background:
+    linear-gradient(rgba(96, 212, 158, 0.04) 1px, transparent 1px),
+    #050707;
+  background-size: 100% 26px, auto;
+}
+
+.log-line {
+  width: 100%;
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  color: var(--muted);
+}
+
+.log-line-debug {
+  color: #6f8f85;
+}
+
+.log-line-info {
+  color: var(--text);
+}
+
+.log-line-warn {
+  color: var(--warn);
+}
+
+.log-line-error {
+  color: var(--danger);
+}
+
+.log-line-empty {
+  color: var(--muted);
+  font-style: italic;
 }
 
 .line-break {
@@ -1043,5 +1183,19 @@ body.star-map-open {
 
   .star-map-panel {
     overflow: auto;
+  }
+
+  .depot-list-item {
+    grid-template-columns: 1fr;
+    gap: 4px;
+    padding: 10px;
+  }
+
+  .log-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .log-count {
+    text-align: left;
   }
 }
