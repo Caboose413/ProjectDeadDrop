@@ -18,6 +18,7 @@ function resetAccess() {
   DeadDropConsole.resetOutput();
   DeadDropCommands.resetState();
   DeadDropCommandHistory.reset();
+  DeadDropOperatorPanel.reset();
   DeadDropDom.consoleInput.value = "";
   DeadDropDom.depotScreen.hidden = true;
   DeadDropDom.consoleScreen.hidden = true;
@@ -82,7 +83,9 @@ DeadDropDom.consoleInput.addEventListener("keydown", (event) => {
   );
 });
 
-DeadDropDom.clearCacheButton.addEventListener("click", resetAccess);
+DeadDropDom.clearCacheButtons.forEach((button) => {
+  button.addEventListener("click", resetAccess);
+});
 DeadDropDom.backToConsoleButton.addEventListener("click", DeadDropConsole.closeDepot);
 
 if (localStorage.getItem(DeadDropConfig.ACCESS_CACHE_KEY) === "true") {

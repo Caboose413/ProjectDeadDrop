@@ -8,13 +8,41 @@
 </head>
 <body>
   <main class="terminal-shell">
+    <aside class="operator-chat" aria-labelledby="operator-chat-title">
+      <header class="operator-chat-header">
+        <div>
+          <p class="eyebrow">Unresolved Channel</p>
+          <h2 id="operator-chat-title">The Operator</h2>
+        </div>
+        <span id="operator-link-state" class="operator-link-state">STANDBY</span>
+      </header>
+
+      <div id="operator-chat-log" class="operator-chat-log" aria-live="polite">
+        <div class="operator-message operator-message-remote">
+          <span>The Operator</span>
+          <p>ECHO-07 link waiting. Cargo ledgers hide routes.</p>
+        </div>
+      </div>
+
+      <form id="operator-chat-form" class="operator-chat-form" autocomplete="off">
+        <label for="operator-chat-input">ECHO-07</label>
+        <div class="operator-chat-entry">
+          <input id="operator-chat-input" spellcheck="false" aria-label="Message The Operator">
+          <button type="submit">Send</button>
+        </div>
+      </form>
+    </aside>
+
     <section id="login-screen" class="access-panel" aria-labelledby="screen-title">
       <header class="panel-header">
         <div>
           <p class="eyebrow">Project Dead Drop</p>
           <h1 id="screen-title">Transition Recovery Node</h1>
         </div>
-        <span class="status-pill" aria-label="System status">LOCKED</span>
+        <div class="console-actions">
+          <button class="clear-cache-button" type="button">Clear Cache</button>
+          <span class="status-pill" aria-label="System status">LOCKED</span>
+        </div>
       </header>
 
       <div class="case-strip" aria-label="Case summary">
@@ -55,7 +83,7 @@
           <h1 id="console-title">Case 07-LOSTREGEN</h1>
         </div>
         <div class="console-actions">
-          <button id="clear-cache" class="clear-cache-button" type="button">Clear Cache</button>
+          <button class="clear-cache-button" type="button">Clear Cache</button>
           <span class="status-pill status-open" aria-label="System status">OPEN</span>
         </div>
       </header>
@@ -170,6 +198,8 @@
   <script src="console-ui.js"></script>
   <script src="reward.js"></script>
   <script src="star-map.js"></script>
+  <script src="operator-ai.js"></script>
+  <script src="operator-panel.js"></script>
   <script src="command-history.js"></script>
   <script src="commands.js"></script>
   <script src="app.js"></script>

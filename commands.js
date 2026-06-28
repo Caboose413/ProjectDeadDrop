@@ -44,6 +44,33 @@ const DeadDropCommands = (() => {
     );
   }
 
+  async function askOperator(prompt) {
+    if (!prompt) {
+      DeadDropConsole.appendBlock([
+        "usage:",
+        "  operator <message>",
+        "  op <message>",
+        "  contact <message>"
+      ], "err");
+      return;
+    }
+
+    DeadDropConsole.appendLine("The Operator: [signal open / waiting]", "sys");
+    DeadDropConsole.appendLine("operator channel routed to side pane", "sys");
+    DeadDropOperatorPanel.ask(prompt);
+  }
+
+  function openOperatorChannel() {
+    DeadDropConsole.appendBlock([
+      "OPERATOR CHANNEL // DEGRADED",
+      "link state: intermittent",
+      "source: unresolved",
+      "submit: operator <message>"
+    ], "warn");
+    DeadDropOperatorPanel.focus();
+    DeadDropOperatorPanel.receive("ECHO-07 opened the Operator channel. Give one short first-contact clue.");
+  }
+
   function run(rawCommand) {
     const command = rawCommand.trim().toLowerCase();
     if (!command) return;
@@ -56,11 +83,23 @@ const DeadDropCommands = (() => {
         "ls       - list recovered depots",
         "cd       - <dir> open a depot",
         "signal   - <method> <data> decode signal payload",
+        "operator - <message> contact unresolved channel",
         "starmap  - open recovered navigation array",
         "status   - show case status",
         "clear    - clear terminal (alias cls)",
         "findme   - identify current session"
       ]);
+      return;
+    }
+
+    if (command === "operator" || command === "op" || command === "contact") {
+      askOperator("");
+      return;
+    }
+
+    if (command.startsWith("operator ") || command.startsWith("op ") || command.startsWith("contact ")) {
+      const prompt = rawCommand.replace(/^\s*(operator|op|contact)\s+/i, "").trim();
+      askOperator(prompt);
       return;
     }
 
@@ -117,6 +156,7 @@ const DeadDropCommands = (() => {
           DeadDropConsole.appendLine("goal reached: location marker recovered", "warn");
           printL4Info();
           DeadDropReward.triggerGoalEffect();
+          DeadDropOperatorPanel.receive("ECHO-07 recovered the L4 Shallow Fields Station marker. Give one short next clue without solving the whole case.");
         }
       } catch (error) {
         DeadDropConsole.appendLine("signal decode failed", "err");
@@ -129,7 +169,8 @@ const DeadDropCommands = (() => {
         "drwxr-x---  depot01/    [grey-market goods manifest]",
         "drwxr-x---  depot02/   [relay data and message pings]",
         "drwxr-x---  depot03/   [banu exchange fragments]",
-        "drwxr-x---  system/    [recovered Stanton navigation index]"
+        "drwxr-x---  system/    [recovered Stanton navigation index]",
+        "crw-r-----  operator/  [unresolved message channel]"
       ]);
       return;
     }
@@ -149,12 +190,19 @@ const DeadDropCommands = (() => {
         "ls shows recovered depot manifests available to this session.",
         "Use cd <depot> to inspect a depot manifest.",
         "Use cd system to inspect the recovered Stanton solar system index.",
+        "Use cd operator to open the unresolved message channel.",
         "",
         "example:",
         "  ls",
         "  cd depot01",
-        "  cd system"
+        "  cd system",
+        "  cd operator"
       ]);
+      return;
+    }
+
+    if (command === "open operator" || command === "open operator/" || command === "cd operator" || command === "cd operator/") {
+      openOperatorChannel();
       return;
     }
 

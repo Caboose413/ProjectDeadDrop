@@ -9,7 +9,7 @@ const DeadDropDom = (() => {
   const consoleForm = document.querySelector("#console-form");
   const consoleInput = document.querySelector("#console-input");
   const consoleOutput = document.querySelector("#console-output");
-  const clearCacheButton = document.querySelector("#clear-cache");
+  const clearCacheButtons = Array.from(document.querySelectorAll(".clear-cache-button"));
   const backToConsoleButton = document.querySelector("#back-to-console");
   const depotTitle = document.querySelector("#depot-title");
   const depotContent = document.querySelector("#depot-content");
@@ -18,6 +18,10 @@ const DeadDropDom = (() => {
   const rewardTitle = rewardEffect.querySelector("[data-reward-title]");
   const starMap = document.querySelector("#star-map");
   const closeStarMapButton = document.querySelector("#close-star-map");
+  const operatorChatForm = document.querySelector("#operator-chat-form");
+  const operatorChatInput = document.querySelector("#operator-chat-input");
+  const operatorChatLog = document.querySelector("#operator-chat-log");
+  const operatorLinkState = document.querySelector("#operator-link-state");
 
   rewardEffect.hidden = true;
   document.body.classList.remove("reward-effect-active");
@@ -37,7 +41,7 @@ const DeadDropDom = (() => {
     consoleForm,
     consoleInput,
     consoleOutput,
-    clearCacheButton,
+    clearCacheButtons,
     backToConsoleButton,
     depotTitle,
     depotContent,
@@ -46,6 +50,10 @@ const DeadDropDom = (() => {
     rewardTitle,
     starMap,
     closeStarMapButton,
+    operatorChatForm,
+    operatorChatInput,
+    operatorChatLog,
+    operatorLinkState,
     setInvalid
   };
 })();

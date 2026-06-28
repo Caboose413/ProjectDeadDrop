@@ -3,6 +3,17 @@ const DeadDropCodecs = (() => {
     return hex.match(/.{1,2}/g).map((byte) => String.fromCharCode(parseInt(byte, 16))).join("");
   }
 
+  function decodeA1Z26(payload) {
+    const values = payload.match(/\b\d{1,2}\b/g) || [];
+    if (!values.length) return "";
+
+    return values.map((value) => {
+      const number = Number(value);
+      if (number < 1 || number > 26) throw new Error("A1Z26 value out of range");
+      return String.fromCharCode(96 + number);
+    }).join("");
+  }
+
   const signalCodecs = {
     base64: {
       label: "Base64 payload",
@@ -11,6 +22,10 @@ const DeadDropCodecs = (() => {
     hex: {
       label: "Hex byte string",
       decode: (payload) => decodeHex(payload.replace(/\s+/g, ""))
+    },
+    a1z26: {
+      label: "A1Z26 number string",
+      decode: (payload) => decodeA1Z26(payload)
     },
     reverse: {
       label: "Reverse string",
@@ -31,6 +46,7 @@ const DeadDropCodecs = (() => {
   }
 
   return {
+    decodeA1Z26,
     decodeHex,
     getSignalCodec,
     listSignalCodecs
