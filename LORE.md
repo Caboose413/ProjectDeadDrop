@@ -44,6 +44,26 @@ The horror of the ARG comes from realizing that the missing person may not simpl
 
 The player begins with grief and ends up inside a conspiracy.
 
+## Current ARG Flow
+
+The current storyline begins when the player receives the login website and the message:
+
+```text
+find me
+```
+
+The login page is the first puzzle gate. The player uses the clues on the page to authenticate into the recovery console. At this stage, they do not know who sent the message or whether the system is safe.
+
+Inside the console, the player follows recovered depot records, command outputs, encoded payloads, and route fragments. Solving this first chain points them toward the first physical investigation site:
+
+```text
+L4 Shallow Fields Station
+```
+
+At L4, the player finds a code hidden near a grey-market terminal. The terminal is used to send concealed messages and trade illegal commodities. This discovery confirms that the missing regen imprint was not lost by accident. It passed through a criminal communications and trade system.
+
+The L4 code should become the bridge into the next phase of the ARG. It can unlock another page, expose a deeper terminal command, identify a Banu broker, or point to the first evidence of Vanduul-linked experimentation.
+
 ## The Network
 
 The dead drop network hides stolen regen data inside ordinary cargo traffic. Legal and semi-legal goods move along known routes while the real payload travels in the data channel. A clean manifest can hide a dirty transfer.
