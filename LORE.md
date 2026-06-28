@@ -60,7 +60,17 @@ Inside the console, the player follows recovered depot records, command outputs,
 L4 Shallow Fields Station
 ```
 
-At L4, the player finds a code hidden near a grey-market terminal. The terminal is used to send concealed messages and trade illegal commodities. This discovery confirms that the missing regen imprint was not lost by accident. It passed through a criminal communications and trade system.
+The player then has to leave the website and go in game. They must travel to the L4 station inside Star Citizen and inspect the area themselves.
+
+At L4, there is an actual illegal terminal used to send concealed messages and trade illegal commodities. Near that terminal, on another machine, the player can find a written code.
+
+That code is brought back to the website and used to unlock the next step of the ARG. The exact code still needs to be confirmed in game.
+
+```text
+L4 CODE: [to be recovered]
+```
+
+This discovery confirms that the missing regen imprint was not lost by accident. It passed through a criminal communications and trade system that exists both as a web puzzle trail and as a physical location in the game.
 
 The L4 code should become the bridge into the next phase of the ARG. It can unlock another page, expose a deeper terminal command, identify a Banu broker, or point to the first evidence of Vanduul-linked experimentation.
 
