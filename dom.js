@@ -16,6 +16,8 @@ const DeadDropDom = (() => {
   const rewardEffect = document.querySelector("#reward-effect");
   const rewardKicker = rewardEffect.querySelector("[data-reward-kicker]");
   const rewardTitle = rewardEffect.querySelector("[data-reward-title]");
+  const starMap = document.querySelector("#star-map");
+  const closeStarMapButton = document.querySelector("#close-star-map");
 
   rewardEffect.hidden = true;
   document.body.classList.remove("reward-effect-active");
@@ -42,6 +44,8 @@ const DeadDropDom = (() => {
     rewardEffect,
     rewardKicker,
     rewardTitle,
+    starMap,
+    closeStarMapButton,
     setInvalid
   };
 })();

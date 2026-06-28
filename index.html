@@ -101,11 +101,75 @@
     </div>
   </div>
 
+  <section id="star-map" class="star-map" role="dialog" aria-modal="true" aria-labelledby="star-map-title" hidden>
+    <div class="star-map-panel">
+      <header class="star-map-header">
+        <div>
+          <p class="eyebrow">Recovered navigation array</p>
+          <h2 id="star-map-title">Stanton System</h2>
+        </div>
+        <button id="close-star-map" class="star-map-close" type="button">Close map</button>
+      </header>
+
+      <div class="system-record" aria-label="Stanton system record">
+        <span><small>Affiliation</small><strong>United Empire of Earth</strong></span>
+        <span><small>Discovered</small><strong>SEY 2851</strong></span>
+        <span><small>Jump points</small><strong>Pyro / Magnus / Terra</strong></span>
+      </div>
+
+      <div class="system-chart" aria-label="Five planetary bodies orbiting Stanton across six navigation bands with four fixed ARC relay stations">
+        <div class="system-crosshair" aria-hidden="true"></div>
+        <div class="system-star">
+          <span class="star-core"></span>
+          <strong>STANTON</strong>
+        </div>
+
+        <div class="planet-orbit orbit-1" style="--speed: 15s">
+          <div class="planet-marker planet-hurston"><span class="planet-body"></span><strong>HURSTON</strong></div>
+        </div>
+        <div class="planet-orbit orbit-2" style="--speed: 24s">
+          <div class="planet-marker planet-crusader"><span class="planet-body"></span><strong>CRUSADER</strong></div>
+        </div>
+        <div class="planet-orbit orbit-3" style="--speed: 37s">
+          <div class="planet-marker planet-delamar"><span class="planet-body"></span><strong>DELAMAR</strong></div>
+        </div>
+
+        <div class="relay-orbit orbit-4" aria-hidden="true"></div>
+        <div class="relay relay-arcl1"><span></span><strong>ARC-L1</strong><small>JANUS</small></div>
+        <div class="relay relay-arcl3"><span></span><strong>ARC-L3</strong><small>NULL CHOIR</small></div>
+        <div class="relay relay-arcl4"><span></span><strong>ARC-L4</strong><small>PALE ECHO</small></div>
+        <div class="relay relay-arcl5"><span></span><strong>ARC-L5</strong><small>LAST WITNESS</small></div>
+
+        <div class="planet-orbit orbit-5" style="--speed: 58s">
+          <div class="planet-marker planet-arccorp"><span class="planet-body"></span><strong>ARCCORP</strong></div>
+        </div>
+        <div class="planet-orbit orbit-6" style="--speed: 76s">
+          <div class="planet-marker planet-microtech"><span class="planet-body"></span><strong>MICROTECH</strong></div>
+        </div>
+      </div>
+
+      <div class="system-locations" aria-label="Recovered Stanton location index">
+        <article><strong>ORBIT 01 // HURSTON</strong><span>Arial / Aberdeen / Magda / Ita</span></article>
+        <article><strong>ORBIT 02 // CRUSADER</strong><span>Cellin / Daymar / Yela / Port Olisar</span></article>
+        <article><strong>ORBIT 03 // DELAMAR</strong><span>Independent planetoid / recovered route object</span></article>
+        <article><strong>ORBIT 04 // ARC RELAY BAND</strong><span>ARC-L1 / ARC-L3 / ARC-L4 / ARC-L5</span></article>
+        <article><strong>ORBIT 05 // ARCCORP</strong><span>Lyria / Wala</span></article>
+        <article><strong>ORBIT 06 // MICROTECH</strong><span>Calliope / Clio / Euterpe</span></article>
+      </div>
+
+      <footer class="star-map-footer">
+        <span>NAVIGATION BANDS: 06 // ORBITAL BODIES: 05</span>
+        <span>ARC RELAY NODES: 04 // POSITION LOCKED</span>
+      </footer>
+    </div>
+  </section>
+
   <script src="config.js"></script>
   <script src="dom.js"></script>
   <script src="codecs.js"></script>
   <script src="console-ui.js"></script>
   <script src="reward.js"></script>
+  <script src="star-map.js"></script>
   <script src="command-history.js"></script>
   <script src="commands.js"></script>
   <script src="app.js"></script>

@@ -14,6 +14,7 @@ function unlockConsole({ showAccessReward = false } = {}) {
 
 function resetAccess() {
   localStorage.removeItem(DeadDropConfig.ACCESS_CACHE_KEY);
+  DeadDropStarMap.hide();
   DeadDropConsole.resetOutput();
   DeadDropCommands.resetState();
   DeadDropCommandHistory.reset();

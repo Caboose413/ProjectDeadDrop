@@ -37,10 +37,17 @@ const DeadDropCommands = (() => {
         "ls       - list recovered depots",
         "cd       - <dir> open a depot",
         "signal   - <method> <data> decode signal payload",
+        "starmap  - open recovered navigation array",
         "status   - show case status",
         "clear    - clear terminal (alias cls)",
         "findme   - identify current session"
       ]);
+      return;
+    }
+
+    if (command === "starmap" || command === "map") {
+      DeadDropConsole.appendLine("Stanton navigation array restored // four ARC relay positions locked", "warn");
+      DeadDropStarMap.show();
       return;
     }
 
