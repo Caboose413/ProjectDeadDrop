@@ -111,9 +111,9 @@ const DeadDropConsole = (() => {
     DeadDropDom.backToConsoleButton.focus();
   }
 
-  function openLogDepot(title, entries) {
-    DeadDropDom.depotTitle.textContent = title;
-    DeadDropDom.depotContent.innerHTML = "";
+  function openLogDepot(title, entries, initialLevel = "all") {
+    DeadDropDom.logWindowTitle.textContent = title;
+    DeadDropDom.logWindowContent.innerHTML = "";
 
     const wrapper = document.createElement("section");
     wrapper.className = "log-depot";
@@ -146,6 +146,7 @@ const DeadDropConsole = (() => {
       option.textContent = level.toUpperCase();
       levelFilter.appendChild(option);
     });
+    levelFilter.value = initialLevel;
 
     const count = document.createElement("span");
     count.className = "log-count";
@@ -186,12 +187,20 @@ const DeadDropConsole = (() => {
 
     toolbar.append(searchLabel, searchInput, filterLabel, levelFilter, count);
     wrapper.append(toolbar, output);
-    DeadDropDom.depotContent.appendChild(wrapper);
+    DeadDropDom.logWindowContent.appendChild(wrapper);
 
-    DeadDropDom.consoleScreen.hidden = true;
-    DeadDropDom.depotScreen.hidden = false;
+    DeadDropDom.logWindow.hidden = false;
+    document.body.classList.add("log-window-open");
     searchInput.focus();
     render();
+  }
+
+  function closeLogDepot() {
+    if (DeadDropDom.logWindow.hidden) return;
+    DeadDropDom.logWindow.hidden = true;
+    DeadDropDom.logWindowContent.innerHTML = "";
+    document.body.classList.remove("log-window-open");
+    if (!DeadDropDom.consoleScreen.hidden) DeadDropDom.consoleInput.focus();
   }
 
   function closeDepot() {
@@ -208,6 +217,7 @@ const DeadDropConsole = (() => {
     appendGrid,
     openDepot,
     openLogDepot,
+    closeLogDepot,
     closeDepot
   };
 })();

@@ -122,6 +122,20 @@
     </section>
   </main>
 
+  <section id="log-window" class="log-window" role="dialog" aria-modal="true" aria-labelledby="log-window-title" hidden>
+    <div class="log-window-panel">
+      <header class="log-window-header">
+        <div>
+          <p class="eyebrow">Recovered Depot</p>
+          <h2 id="log-window-title">Relay Log Depot</h2>
+        </div>
+        <button id="close-log-window" class="log-window-close" type="button">Close logs</button>
+      </header>
+
+      <div id="log-window-content" class="log-window-content" aria-live="polite"></div>
+    </div>
+  </section>
+
   <div id="reward-effect" class="reward-effect" aria-live="assertive" hidden>
     <div class="reward-card">
       <span data-reward-kicker>Location Marker Recovered</span>
@@ -165,8 +179,23 @@
         <div class="relay-orbit orbit-4" aria-hidden="true"></div>
         <div class="relay relay-arcl1"><span></span><strong>ARC-L1</strong><small>JANUS</small></div>
         <div class="relay relay-arcl3"><span></span><strong>ARC-L3</strong><small>NULL CHOIR</small></div>
-        <div class="relay relay-arcl4"><span></span><strong>ARC-L4</strong><small>PALE ECHO</small></div>
+        <div class="relay relay-arcl4" aria-label="ARC-L4 Pale Echo position lock"><span></span><strong>ARC-L4</strong><small>PALE ECHO</small></div>
         <div class="relay relay-arcl5"><span></span><strong>ARC-L5</strong><small>LAST WITNESS</small></div>
+
+        <figure class="l4-terminal-preview" aria-label="Recovered L4 station terminal image">
+          <div class="terminal-image">
+            <div class="terminal-image-screen">
+              <span class="terminal-image-use">USE [F]</span>
+              <span class="terminal-image-logo">COMMODITY SHOP</span>
+              <span class="terminal-image-ship"></span>
+              <span class="terminal-image-route"></span>
+            </div>
+          </div>
+          <figcaption>
+            <strong>L4 Shallow Fields Station</strong>
+            <span>Terminal image recovered // commodity shop access point</span>
+          </figcaption>
+        </figure>
 
         <div class="planet-orbit orbit-5" style="--speed: 58s">
           <div class="planet-marker planet-arccorp"><span class="planet-body"></span><strong>ARCCORP</strong></div>
@@ -192,12 +221,38 @@
     </div>
   </section>
 
+  <section id="cctv-fragment" class="cctv-fragment" role="dialog" aria-modal="true" aria-labelledby="cctv-title" hidden>
+    <div class="cctv-panel">
+      <header class="cctv-header">
+        <div>
+          <p class="eyebrow">Recovered surveillance fragment</p>
+          <h2 id="cctv-title">L4 Commodity Bay // CAM-03</h2>
+        </div>
+        <button id="close-cctv" class="cctv-close" type="button">Close feed</button>
+      </header>
+
+      <div class="cctv-feed">
+        <video id="cctv-video" muted loop playsinline preload="metadata">
+          <source src="Videos/CCTVL4.mp4" type="video/mp4">
+        </video>
+        <span class="cctv-stamp">2926-06-01 01:10:55 // L4-COMM-BAY</span>
+        <span class="cctv-state">PARTIAL // NO AUDIO</span>
+      </div>
+
+      <footer class="cctv-footer">
+        <span>FIELD CODE 260913081 // SOURCE MATCH</span>
+        <span>FRAME LOSS: 17% // SUBJECT UNRESOLVED</span>
+      </footer>
+    </div>
+  </section>
+
   <script src="config.js"></script>
   <script src="dom.js"></script>
   <script src="codecs.js"></script>
   <script src="console-ui.js"></script>
   <script src="reward.js"></script>
   <script src="star-map.js"></script>
+  <script src="cctv.js"></script>
   <script src="operator-ai.js"></script>
   <script src="operator-panel.js"></script>
   <script src="command-history.js"></script>

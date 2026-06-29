@@ -13,11 +13,18 @@ const DeadDropDom = (() => {
   const backToConsoleButton = document.querySelector("#back-to-console");
   const depotTitle = document.querySelector("#depot-title");
   const depotContent = document.querySelector("#depot-content");
+  const logWindow = document.querySelector("#log-window");
+  const closeLogWindowButton = document.querySelector("#close-log-window");
+  const logWindowTitle = document.querySelector("#log-window-title");
+  const logWindowContent = document.querySelector("#log-window-content");
   const rewardEffect = document.querySelector("#reward-effect");
   const rewardKicker = rewardEffect.querySelector("[data-reward-kicker]");
   const rewardTitle = rewardEffect.querySelector("[data-reward-title]");
   const starMap = document.querySelector("#star-map");
   const closeStarMapButton = document.querySelector("#close-star-map");
+  const cctvFragment = document.querySelector("#cctv-fragment");
+  const cctvVideo = document.querySelector("#cctv-video");
+  const closeCctvButton = document.querySelector("#close-cctv");
   const operatorChatForm = document.querySelector("#operator-chat-form");
   const operatorChatInput = document.querySelector("#operator-chat-input");
   const operatorChatLog = document.querySelector("#operator-chat-log");
@@ -45,11 +52,18 @@ const DeadDropDom = (() => {
     backToConsoleButton,
     depotTitle,
     depotContent,
+    logWindow,
+    closeLogWindowButton,
+    logWindowTitle,
+    logWindowContent,
     rewardEffect,
     rewardKicker,
     rewardTitle,
     starMap,
     closeStarMapButton,
+    cctvFragment,
+    cctvVideo,
+    closeCctvButton,
     operatorChatForm,
     operatorChatInput,
     operatorChatLog,

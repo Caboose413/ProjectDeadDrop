@@ -15,6 +15,8 @@ function unlockConsole({ showAccessReward = false } = {}) {
 function resetAccess() {
   localStorage.removeItem(DeadDropConfig.ACCESS_CACHE_KEY);
   DeadDropStarMap.hide();
+  DeadDropCctv.hide();
+  DeadDropConsole.closeLogDepot();
   DeadDropConsole.resetOutput();
   DeadDropCommands.resetState();
   DeadDropCommandHistory.reset();
@@ -87,6 +89,41 @@ DeadDropDom.clearCacheButtons.forEach((button) => {
   button.addEventListener("click", resetAccess);
 });
 DeadDropDom.backToConsoleButton.addEventListener("click", DeadDropConsole.closeDepot);
+DeadDropDom.closeLogWindowButton.addEventListener("click", DeadDropConsole.closeLogDepot);
+
+function navigateBackInApp(event) {
+  if (event.button !== 3 || DeadDropDom.loginScreen.hidden === false) return;
+
+  event.preventDefault();
+  event.stopPropagation();
+
+  if (!DeadDropDom.cctvFragment.hidden) {
+    DeadDropCctv.hide();
+    return;
+  }
+
+  if (!DeadDropDom.logWindow.hidden) {
+    DeadDropConsole.closeLogDepot();
+    return;
+  }
+
+  if (!DeadDropDom.starMap.hidden) {
+    DeadDropStarMap.hide();
+    return;
+  }
+
+  if (!DeadDropDom.depotScreen.hidden) {
+    DeadDropConsole.closeDepot();
+  }
+}
+
+window.addEventListener("mouseup", navigateBackInApp);
+window.addEventListener("auxclick", navigateBackInApp);
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && !DeadDropDom.logWindow.hidden) {
+    DeadDropConsole.closeLogDepot();
+  }
+});
 
 if (localStorage.getItem(DeadDropConfig.ACCESS_CACHE_KEY) === "true") {
   DeadDropDom.loginScreen.hidden = true;
