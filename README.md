@@ -4,6 +4,11 @@ Interactive ARG prototype built as a static web page.
 ## Play Locally
 https://Caboose413.github.io/ProjectDeadDrop/
 
+## Current Features
+
+- Static terminal ARG flow with in-world command discovery.
+- CCTV fragments now play recovered video with an accompanying recovery tone.
+
 ## Local Operator AI
 
 Run the local bridge before using `operator <message>` or `cd operator` in the terminal:

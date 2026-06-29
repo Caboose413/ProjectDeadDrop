@@ -82,7 +82,7 @@ const DeadDropCommands = (() => {
   function printFieldCodeRecovery() {
     fieldCodeRecovered = true;
     DeadDropStarMap.setHint(null);
-    DeadDropCctv.unlock("l4-cam-03", { autoplay: true });
+    DeadDropCctv.disable("l4-cam-03");
     DeadDropOperator.unlockContext("fieldCode");
     DeadDropReward.show({
       kicker: "Field Code Accepted",
@@ -102,7 +102,7 @@ const DeadDropCommands = (() => {
       "The file is resisting recovery.",
       "Something older than Sophie is attached to this imprint.",
       "",
-      "CCTV FRAGMENT RECOVERED: opening L4 surveillance feed",
+      "L4 CCTV FRAGMENT ARCHIVED: field-code validation complete",
       "FRAME ANALYSIS DEPOT RECOVERED: cd depot06"
     ], "warn");
 
@@ -434,6 +434,14 @@ const DeadDropCommands = (() => {
 
     if (command === "cctv" || command === "open cctv" || command === "play cctv") {
       if (!DeadDropCctv.isUnlocked()) {
+        if (fieldCodeRecovered) {
+          DeadDropConsole.appendBlock([
+            "CCTV FRAGMENT ARCHIVED",
+            "L4 surveillance already served its purpose: use the recovered frame analysis depot"
+          ], "err");
+          return;
+        }
+
         DeadDropConsole.appendBlock([
           "CCTV FRAGMENT LOCKED",
           "recover the L4 signal marker before opening surveillance data"

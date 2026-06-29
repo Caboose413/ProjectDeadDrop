@@ -10,6 +10,7 @@ const DeadDropCctv = (() => {
   const source = video.querySelector("source");
   const unlockedFragments = new Set();
   let activeFragmentId = "l4-cam-03";
+  let recoveryTone = null;
 
   const fragments = {
     "l4-cam-03": {
@@ -17,13 +18,37 @@ const DeadDropCctv = (() => {
       kicker: "Recovered surveillance fragment",
       src: "Videos/CCTVL4.mp4",
       stamp: "2926-06-01 01:10:55 // L4-COMM-BAY",
-      state: "PARTIAL // NO AUDIO",
+      state: "PARTIAL // RECOVERY TONE",
       footer: [
-        "FIELD CODE 260913081 // SOURCE MATCH",
+        "LOCATION HINT // L4 COMMODITY BAY",
         "FRAME LOSS: 17% // SUBJECT UNRESOLVED"
       ]
     }
   };
+
+  function getRecoveryTone() {
+    if (!recoveryTone) {
+      recoveryTone = new Audio("Audio/L4CCTV_Shime.mp3");
+      recoveryTone.preload = "auto";
+      recoveryTone.volume = 0.45;
+    }
+
+    return recoveryTone;
+  }
+
+  function playRecoveryTone() {
+    const tone = getRecoveryTone();
+    tone.pause();
+    tone.currentTime = 0;
+    tone.play().catch(() => {});
+  }
+
+  function stopRecoveryTone() {
+    if (!recoveryTone) return;
+
+    recoveryTone.pause();
+    recoveryTone.currentTime = 0;
+  }
 
   function applyFragment(fragmentId) {
     const entry = fragments[fragmentId] || fragments["l4-cam-03"];
@@ -49,7 +74,7 @@ const DeadDropCctv = (() => {
     fragment.hidden = false;
     document.body.classList.add("cctv-open");
     video.currentTime = 0;
-    video.play().catch(() => {});
+    video.play().then(playRecoveryTone).catch(() => playRecoveryTone());
     closeButton.focus();
     return true;
   }
@@ -59,6 +84,7 @@ const DeadDropCctv = (() => {
     fragment.hidden = true;
     document.body.classList.remove("cctv-open");
     video.pause();
+    stopRecoveryTone();
     if (!DeadDropDom.consoleScreen.hidden) DeadDropDom.consoleInput.focus();
   }
 
@@ -66,6 +92,11 @@ const DeadDropCctv = (() => {
     unlockedFragments.add(fragmentId);
     applyFragment(fragmentId);
     if (autoplay) window.setTimeout(() => show(fragmentId), autoplayDelay);
+  }
+
+  function disable(fragmentId = activeFragmentId) {
+    unlockedFragments.delete(fragmentId);
+    if (fragmentId === activeFragmentId) hide();
   }
 
   function setUnlocked(value) {
@@ -83,10 +114,13 @@ const DeadDropCctv = (() => {
   }
 
   closeButton.addEventListener("click", hide);
+  video.addEventListener("play", playRecoveryTone);
+  video.addEventListener("pause", stopRecoveryTone);
+  video.addEventListener("ended", stopRecoveryTone);
 
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && !fragment.hidden) hide();
   });
 
-  return { hide, isUnlocked, setUnlocked, show, unlock };
+  return { disable, hide, isUnlocked, setUnlocked, show, unlock };
 })();
