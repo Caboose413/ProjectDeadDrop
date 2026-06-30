@@ -29,6 +29,35 @@ const DeadDropCommands = (() => {
     { level: "error", timestamp: "2926-06-02 04:03:51.776", source: "ami_analysis", message: "memory-pattern checksum repeated after buffer clear" }
   ];
 
+  function getActiveStoryContexts() {
+    const contexts = ["base"];
+    if (locationMarkerRecovered) contexts.push("l4Marker");
+    if (fieldCodeRecovered) contexts.push("fieldCode");
+    if (arcL5MarkerRecovered) contexts.push("arcL5Marker");
+    if (tarsusRackRecovered) contexts.push("tarsusRack");
+    if (l5HackComplete) contexts.push("l5Hack");
+    return contexts;
+  }
+
+  function getVisibleDepots() {
+    return DeadDropChapters.getDepots(getActiveStoryContexts());
+  }
+
+  function depotIsVisible(id) {
+    return DeadDropChapters.depotIsActive(id, getActiveStoryContexts());
+  }
+
+  function requireVisibleDepot(id) {
+    if (depotIsVisible(id)) return true;
+
+    DeadDropConsole.appendBlock([
+      `${id.toUpperCase()} // NOT INDEXED`,
+      `this depot has not been recovered in the current chapter`,
+      "run ls to review active recovered depots"
+    ], "err");
+    return false;
+  }
+
   function resetState() {
     riddleArmed = false;
     locationMarkerRecovered = false;
@@ -538,17 +567,7 @@ const DeadDropCommands = (() => {
     }
 
     if (command === "ls") {
-      DeadDropConsole.appendDepotList([
-        { id: "depot01", permissions: "drwxr-x---", description: "grey-market goods manifest" },
-        { id: "depot02", permissions: "drwxr-x---", description: "relay data and message pings" },
-        { id: "depot03", permissions: "drwxr-x---", description: "banu exchange fragments" },
-        { id: "depot04", permissions: "-rw-r-----", description: "relay log depot" },
-        { id: "depot05", permissions: "-rw-r-----", description: "audio intercept transcript" },
-        { id: "depot06", permissions: fieldCodeRecovered ? "drwxr-x---" : "d---------", description: fieldCodeRecovered ? "L4 CCTV frame analysis" : "locked surveillance analysis" },
-        { id: "depot07", permissions: arcL5MarkerRecovered ? "drwxr-x---" : "d---------", description: arcL5MarkerRecovered ? "Yellow Core rack audit" : "locked ARC-L5 site audit" },
-        { id: "system", permissions: "drwxr-x---", description: "recovered Stanton navigation index" },
-        { id: "operator", permissions: "crw-r-----", description: "unresolved message channel" }
-      ], (depotId) => run(`cd ${depotId}`));
+      DeadDropConsole.appendDepotList(getVisibleDepots(), (depotId) => run(`cd ${depotId}`));
       return;
     }
 
@@ -604,11 +623,13 @@ const DeadDropCommands = (() => {
     }
 
     if (command === "open operator" || command === "open operator/" || command === "cd operator" || command === "cd operator/") {
+      if (!requireVisibleDepot("operator")) return;
       openOperatorChannel();
       return;
     }
 
     if (command === "open system" || command === "open system/" || command === "cd system" || command === "cd system/") {
+      if (!requireVisibleDepot("system")) return;
       openSolarSystemIndex();
       return;
     }
@@ -633,6 +654,7 @@ const DeadDropCommands = (() => {
       command === "open ledger" ||
       command === "open manifest"
     ) {
+      if (!requireVisibleDepot("depot01")) return;
       DeadDropConsole.openDepot(
         "DEPOT-01 // GREY-MARKET GOODS MANIFEST",
         ["Entry", "Goods", "Qty", "From", "Route", "To", "Status"],
@@ -658,6 +680,7 @@ const DeadDropCommands = (() => {
     }
 
     if (command === "open depot02" || command === "open depot02/" || command === "cd depot02" || command === "cd depot02/") {
+      if (!requireVisibleDepot("depot02")) return;
       DeadDropConsole.openDepot(
         "DEPOT02 // RELAY DATA AND MESSAGE PINGS",
         ["Entry", "Type", "From", "Route", "To", "Status"],
@@ -686,6 +709,7 @@ const DeadDropCommands = (() => {
     }
 
     if (command === "open depot03" || command === "open depot03/" || command === "cd depot03" || command === "cd depot03/") {
+      if (!requireVisibleDepot("depot03")) return;
       DeadDropConsole.openDepot(
         "DEPOT03 // BANU EXCHANGE FRAGMENTS",
         ["Timestamp", "Type", "ID", "Route", "Status"],
@@ -708,11 +732,13 @@ const DeadDropCommands = (() => {
     }
 
     if (command === "open depot04" || command === "open depot04/" || command === "cd depot04" || command === "cd depot04/") {
+      if (!requireVisibleDepot("depot04")) return;
       DeadDropConsole.openLogDepot("DEPOT04 // RELAY LOG DEPOT", logDepotEntries);
       return;
     }
 
     if (command === "open depot05" || command === "open depot05/" || command === "cd depot05" || command === "cd depot05/") {
+      if (!requireVisibleDepot("depot05")) return;
       DeadDropConsole.openDepot(
         "DEPOT05 // AUDIO INTERCEPT TRANSCRIPT",
         ["Time", "Speaker", "Confidence", "Transcript"],
@@ -739,13 +765,7 @@ const DeadDropCommands = (() => {
     }
 
     if (command === "open depot06" || command === "open depot06/" || command === "cd depot06" || command === "cd depot06/") {
-      if (!fieldCodeRecovered) {
-        DeadDropConsole.appendBlock([
-          "DEPOT06 // LOCKED",
-          "surveillance analysis requires L4 field-code recovery"
-        ], "err");
-        return;
-      }
+      if (!requireVisibleDepot("depot06")) return;
 
       DeadDropConsole.openDepot(
         "DEPOT06 // L4 CCTV FRAME ANALYSIS",
@@ -766,13 +786,7 @@ const DeadDropCommands = (() => {
     }
 
     if (command === "open depot07" || command === "open depot07/" || command === "cd depot07" || command === "cd depot07/") {
-      if (!arcL5MarkerRecovered) {
-        DeadDropConsole.appendBlock([
-          "DEPOT07 // LOCKED",
-          "Yellow Core site audit requires ARC-L5 marker recovery"
-        ], "err");
-        return;
-      }
+      if (!requireVisibleDepot("depot07")) return;
 
       DeadDropConsole.openDepot(
         "DEPOT07 // ARC-L5 YELLOW CORE RACK AUDIT",

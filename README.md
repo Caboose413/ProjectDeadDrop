@@ -8,6 +8,15 @@ https://Caboose413.github.io/ProjectDeadDrop/
 
 - Static terminal ARG flow with in-world command discovery.
 - CCTV fragments now play recovered video with an accompanying recovery tone.
+- Chapter-aware core modules keep future depots and Operator context scoped to recovered story layers.
+
+## Project Layout
+
+- `index.html` and `styles.css` stay at the project root for the static site entrypoint.
+- `core/` contains the browser modules that drive commands, chapters, rewards, media, and Operator chat.
+- `Audio/` and `Videos/` contain playable evidence assets.
+- `docs/` contains local design/lore notes.
+- `logs/` contains local launcher output and is ignored by Git.
 
 ## Local Operator AI
 

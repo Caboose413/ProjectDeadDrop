@@ -302,6 +302,8 @@ const DeadDropOperator = (() => {
   }
 
   function buildContext() {
+    const unlockedContextIds = Array.from(unlockedContext);
+    const activeChapter = DeadDropChapters.getActiveChapter(unlockedContextIds);
     const context = [
       "Project Dead Drop ARG context:",
       "The player is ECHO-07, using a damaged Dead Drop recovery console.",
@@ -311,6 +313,8 @@ const DeadDropOperator = (() => {
       "Patel appears only as SGIGNALW_PATEL(EVERY_PIECE_COUNTS), a fragment signature.",
       "The Operator should be cryptic but useful, never verbose, and should not solve puzzles outright.",
       "Current unlocked context ids: " + (unlockedContext.size ? Array.from(unlockedContext).join(", ") : "base"),
+      "Current chapter: " + activeChapter.title,
+      "Chapter manifest rule: keep replies scoped to the current chapter and earlier recovered layers.",
       "Strict chapter rule: never name locked locations, names, commands, or conclusions before their context id is unlocked.",
       "Before l4Marker is unlocked, do not name L4 Shallow Fields Station or imply the first physical lead; redirect to cargo ledgers, warning logs, and signal payloads."
     ];

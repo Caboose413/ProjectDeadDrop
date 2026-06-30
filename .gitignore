@@ -8,6 +8,7 @@ Thumbs.db
 notes/
 private/
 secrets/
+logs/
 
 # Local configuration and credentials
 .env
