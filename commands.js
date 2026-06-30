@@ -91,7 +91,7 @@ const DeadDropCommands = (() => {
 
     DeadDropConsole.appendBlock([
       "FIELD CODE ACCEPTED // L4 COMMODITY TERMINAL",
-      "260913081 is not a market value.",
+      "The recovered field code is not a market value.",
       "Interpreting as compact registry-date marker...",
       "",
       "MATCH FOUND:",
@@ -106,7 +106,7 @@ const DeadDropCommands = (() => {
       "FRAME ANALYSIS DEPOT RECOVERED: cd depot06"
     ], "warn");
 
-    DeadDropOperatorPanel.receive("ECHO-07 entered field code 260913081 from the L4 commodity terminal. Confirm it is a sealed identity lock connected to Sophie, but do not reveal the buried name.");
+    DeadDropOperatorPanel.receive("ECHO-07 entered the L4 commodity terminal field code. Confirm it is a sealed identity lock connected to Sophie, but do not reveal the buried name.");
   }
 
   function printArcL5Recovery() {
@@ -422,7 +422,7 @@ const DeadDropCommands = (() => {
 
     if (handleL5HackStep(command)) return;
 
-    if (command === "260913081" || command === "code 260913081" || command === "field 260913081") {
+    if (DeadDropSecrets.matches("l4FieldCode", command)) {
       printFieldCodeRecovery();
       return;
     }
@@ -819,7 +819,7 @@ const DeadDropCommands = (() => {
         "SESSION:    provisional",
         "CLEARANCE:  recovery console",
         `MARKER:     ${locationMarkerRecovered ? "L4 Shallow Fields Station" : "[unresolved]"}`,
-        `FIELD CODE: ${fieldCodeRecovered ? "260913081 / SEALED IDENTITY LOCK" : "[unresolved]"}`,
+        `FIELD CODE: ${fieldCodeRecovered ? "VALIDATED / SEALED IDENTITY LOCK" : "[unresolved]"}`,
         `NEXT STOP:  ${arcL5MarkerRecovered ? "ARC-L5 Yellow Core Station" : "[unresolved]"}`,
         `RACK TAG:   ${tarsusRackRecovered ? "KLO-87144 / TARSUS ELECTRONICS" : "[unresolved]"}`,
         `BUFFER:     ${l5HackComplete ? "TARSUS MIRROR PATH" : "[unresolved]"}`

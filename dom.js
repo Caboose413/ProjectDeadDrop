@@ -29,6 +29,7 @@ const DeadDropDom = (() => {
   const operatorChatInput = document.querySelector("#operator-chat-input");
   const operatorChatLog = document.querySelector("#operator-chat-log");
   const operatorLinkState = document.querySelector("#operator-link-state");
+  const operatorNameLabels = Array.from(document.querySelectorAll("[data-operator-name]"));
 
   rewardEffect.hidden = true;
   document.body.classList.remove("reward-effect-active");
@@ -68,6 +69,7 @@ const DeadDropDom = (() => {
     operatorChatInput,
     operatorChatLog,
     operatorLinkState,
+    operatorNameLabels,
     setInvalid
   };
 })();

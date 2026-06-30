@@ -13,3 +13,4 @@ secrets/
 .env
 .env.*
 *.local
+operator-ai-launch*.log
