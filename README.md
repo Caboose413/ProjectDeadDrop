@@ -4,6 +4,10 @@ Interactive ARG prototype built as a static web page.
 ## Play Locally
 https://Caboose413.github.io/ProjectDeadDrop/
 
+## Requirements
+
+Project Dead Drop currently uses Star Citizen locations and in-game evidence as part of the investigation, so Star Citizen access is required for the full intended experience. A future standalone play path is planned so the ARG can be played without needing Star Citizen.
+
 ## Current Features
 
 - Static terminal ARG flow with in-world command discovery.
